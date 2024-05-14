@@ -587,6 +587,8 @@
     const email = document.getElementById('email').value;
     const purchaseDateTime = document.getElementById('purchaseDateTime').value;
 
+    console.log("totPoints:", totPoints);
+
     const customer = {
       customerCode:customerCode,
       customerName:customerName,
@@ -771,7 +773,7 @@
 
   function deleteCustomer(customerCode) {
     $.ajax({
-      url: 'http://localhost:8080/customer/delete' + customerCode,
+      url: `http://localhost:8080/customer/delete/${customerCode}`, // Use backticks for template literal
       type: 'DELETE',
       success: function (response) {
         console.log(response);
@@ -785,7 +787,6 @@
       }
     });
   }
-
 
   $(document).ready(function () {
     getAllCustomers();
