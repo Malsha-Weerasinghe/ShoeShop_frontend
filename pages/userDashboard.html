@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>userDashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/home.css">
+
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" class="navbar bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <img class="logo" src="../assets/images/logo2.png" alt="Image">
+            <div class="col-3 mx-auto" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto justify-content-end">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="btnHome"  id="btnHome">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="btnAbout" >ABOUT</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="btnContact">CONTACT</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="btnDetails">DETAILS</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container" id="Dashboard">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <div class="backBtn" onclick="goBack()">
+                     <img src="assets/images/back.png" alt="Image">
+                 </div>-->
+                <div class="picture-container">
+                    <div class="picture" onclick="navigateTo('login.html')">
+                        <img src="../assets/images/user.png" alt="Image 1">
+                        <div class="image-text">Users</div>
+                    </div>
+                    <div class="picture" onclick="navigateTo('customer.html')">
+                        <img src="../assets/images/customer.png" alt="Image 2">
+                        <div class="image-text">Customers</div>
+                    </div>
+                    <div class="picture" onclick="navigateTo('userEmployee.html')">
+                        <img src="../assets/images/employee.png" alt="Image 3">
+                        <div class="image-text">Employees</div>
+                    </div>
+                    <div class="picture" onclick="navigateTo('userSupplier.html')">
+                        <img src="../assets/images/supplier.png" alt="Image 4">
+                        <div class="image-text">Suppliers</div>
+                    </div>
+                    <div class="picture" onclick="navigateTo('sale.html')">
+                        <img src="../assets/images/sales.png" alt="Image 5">
+                        <div class="image-text">Sales</div>
+                    </div>
+                    <div class="picture" onclick="navigateTo('userInventory.html')">
+                        <img src="../assets/images/inventory.png" alt="Image 6">
+                        <div class="image-text">Inventory</div>
+                    </div>
+                    <div class="picture" onclick="navigateTo('userAdmin.html')">
+                        <img src="../assets/images/admin.png" alt="Image 7">
+                        <div class="image-text">Admin Panel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<main class="container" id="Home">
+    <section class="homePage">
+        <p style="color: black; text-align: center; padding-top: 100px; font-size: 24px; margin-left: 20px; margin-right: 20px">
+            With a curated collection that caters to every taste and occasion, our shop offers an extensive range of footwear for men, women, and children. Whether you're searching for sophisticated dress shoes for a formal event, trendy sneakers for casual outings, or durable boots for outdoor adventures, we have something to suit every lifestyle and preference.
+        </p>
+        <button class="btn btn-dark btn-shop d-block mx-auto" onclick="redirectToLoginPage()">Sign Up</button>
+    </section>
+</main>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../assets/bootstrap/js/jquery-3.7.1.min.js"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    function navigateTo(page) {
+        window.location.href = page;
+    }
+    function goBack() {
+        window.location.href = "home.html";
+    }
+    document.getElementById("btnHome").addEventListener("click", function() {
+        window.location.href = "home.html";
+    });
+
+
+</script>
+</body>
+
+</html>

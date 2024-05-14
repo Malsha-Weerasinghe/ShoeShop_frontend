@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("../assets/images/stockists-mobile.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      padding: 20px;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2); /* Adjust the alpha value (0-1) for desired opacity */
+      z-index: -1; /* Ensure the overlay is behind the content */
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      border-left:0px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #DAA520;
+      color: #fff;
+    }
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select {
+      width: calc(100% - 22px);
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      /*width: 100%;*/
+      padding: 10px;
+      background-color: #0eba33;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #093b11;
+    }
+    .backBtn {
+      position: fixed; /* Set position to fixed */
+      top: 20px; /* Adjust top position */
+      left: 20px; /* Adjust left position */
+      width: 50px;
+      height: auto;
+      border: 2px solid #090808;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s ease; /* Add transition effect */
+    }
+
+    .backBtn:hover {
+      transform: scale(1.1); /* Increase size on hover */
+    }
+
+    .backBtn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #employeeForm,#employeeHead{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2 id="employeeHead">Employee Information Form</h2>
+  <div class="backBtn" onclick="goBack()">
+    <img src="../assets/images/back.png" alt="Image">
+  </div>
+  <form id="employeeForm">
+    <label for="employeeCode">Employee Code</label>
+    <input type="text" id="employeeCode" name="employeeCode" required>
+
+    <label for="employeeName">Employee Name</label>
+    <input type="text" id="employeeName" name="employeeName" required>
+
+    <label for="employeeProfilePic">Profile Picture (Base64)</label>
+    <input type="text" id="employeeProfilePic" name="employeeProfilePic">
+
+    <label for="gender">Gender</label>
+    <select id="gender" name="gender">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="status">Status</label>
+    <input type="text" id="status" name="status">
+
+    <label for="designation">Designation</label>
+    <input type="text" id="designation" name="designation">
+
+    <label for="accessRole">Access Role</label>
+    <select id="accessRole" name="accessRole">
+      <option value="ADMIN">ADMIN</option>
+      <option value="USER">USER</option>
+    </select>
+
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob" name="dob">
+
+    <label for="dateOfJoin">Date of Join</label>
+    <input type="date" id="dateOfJoin" name="dateOfJoin">
+
+    <label for="attachedBranch">Attached Branch</label>
+    <input type="text" id="attachedBranch" name="attachedBranch">
+
+    <label for="addressLine01">Address Line 01</label>
+    <input type="text" id="addressLine01" name="addressLine01">
+
+    <label for="addressLine02">Address Line 02</label>
+    <input type="text" id="addressLine02" name="addressLine02">
+
+    <label for="addressLine03">Address Line 03</label>
+    <input type="text" id="addressLine03" name="addressLine03">
+
+    <label for="addressLine04">Address Line 04</label>
+    <input type="text" id="addressLine04" name="addressLine04">
+
+    <label for="addressLine05">Address Line 05</label>
+    <input type="text" id="addressLine05" name="addressLine05">
+
+    <label for="contactNo">Contact No.</label>
+    <input type="tel" id="contactNo" name="contactNo">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email">
+
+    <label for="emergencyContactPerson">Emergency Contact Person</label>
+    <input type="text" id="emergencyContactPerson" name="emergencyContactPerson">
+
+    <label for="emergencyContact">Emergency Contact</label>
+    <input type="tel" id="emergencyContact" name="emergencyContact">
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Employee Information Table</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Employee Code</th>
+      <th>Employee Name</th>
+      <th>Gender</th>
+      <th>Status</th>
+      <th>Designation</th>
+      <th>Access Role</th>
+      <th>Date of Birth</th>
+      <th>Date of Join</th>
+      <th>Attached Branch</th>
+      <th>Address Line 01</th>
+      <th>Address Line 02</th>
+      <th>Address Line 03</th>
+      <th>Address Line 04</th>
+      <th>Address Line 05</th>
+      <th>Contact No.</th>
+      <th>Email</th>
+      <th>Emergency Contact Person</th>
+      <th>Emergency Contact</th>
+    </tr>
+    </thead>
+    <tbody id="employeeTableBody">
+    <!-- Employee data will be populated here -->
+    </tbody>
+  </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+</body>
+</html>
