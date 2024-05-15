@@ -208,7 +208,7 @@
 
     <h2>Employee Information Table</h2>
 
-                <table class="table">
+                <table>
                     <thead>
                     <tr>
                         <th>Employee Code</th>
@@ -237,16 +237,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="../assets/bootstrap/js/jquery-3.7.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     function goBack() {
         window.history.back();
     }
 
-    /*getAllEmployee();
-    /!*!/loadNextCustomerId();/!*!/
+    getAllEmployees();
 
-    /!* /get all/!*!/
-    function getAllEmployee() {
+    function getAllEmployees(){
         $.ajax({
             url: "http://localhost:8080/employee/getAllEmployees",
             method: "GET",
@@ -254,40 +254,40 @@
             success: function (response) {
                 console.log(response);
                 console.log(response.length);
+                console.log("success to load employees");
                 loadEmployeeDataInTable(response);
             },
             error: function (xhr, status, err) {
-                console.log(err)
+                console.log("Fail to load employees");
+                console.log(err);
             }
-        })
+        });
     }
 
     function loadEmployeeDataInTable(employees) {
         var tableBody = document.getElementById("employeeTable");
         tableBody.innerHTML = "";
 
-        employees.forEach(function(employee) {
+        employees.forEach(function (employee) {
             var row = document.createElement("tr");
 
-            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "DOB", "joinDate", "attachBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function(property) {
+            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "dob", "joinDate", "attachedBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function (property) {
                 var cell = document.createElement("td");
                 cell.textContent = employee[property];
                 row.appendChild(cell);
             });
-
             tableBody.appendChild(row);
         });
     }
 
-
-    function loadEmployeeData() {
+    function loadEmployeeData(employees) {
         var tableBody = document.getElementById("employeeTable");
         tableBody.innerHTML = "";
 
         employees.forEach(function(employee) {
             var row = document.createElement("tr");
 
-            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "DOB", "joinDate", "attachBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function(property) {
+            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "dob", "joinDate", "attachedBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function(property) {
                 var cell = document.createElement("td");
                 cell.textContent = employee[property];
                 row.appendChild(cell);
@@ -296,10 +296,11 @@
             tableBody.appendChild(row);
         });
     }
+
     window.onload = function() {
+        /*   getAllSuppliers();*/
         loadEmployeeData();
     };
-
     //!*next id!/
     function loadNextEmployeeId(){
         $.ajax({
@@ -319,26 +320,26 @@
         saveEmployee();
     })
 
-    /!* /save/!*!/
+   /* /!* /save/!*!/*/
     function saveEmployee(){
         // Retrieve values from input fields
         const employeeCode = $("#employeeCode").val();
         const employeeName = $("#employeeName").val();
-        const proPic = $("#employeeProfilePic").val();
+        const proPic = $("#proPic").val();
         const gender = $("#gender").val();
         const status = $("#status").val();
         const designation = $("#designation").val(); // Ensure totPoints is treated as an integer
         const role = $("#accessRole").val();
         const dob = $("#dob").val();
-        const joinDate = $("#dateOfJoin").val();
+        const joinDate = $("#joinDate").val();
         const attachBranch = $("#attachedBranch").val();
         const addressLine01 = $("#addressLine01").val();
         const addressLine02 = $("#addressLine02").val();
         const addressLine03 = $("#addressLine03").val();
         const contact = $("#contactNo").val();
         const email = $("#email").val();
-        const guardian = $("#emergencyContactPerson").val();
-        const emergContact = $("#emergencyContact").val();
+        const guardian = $("#guardian").val();
+        const emergContact = $("#emergContact").val();
 
         // Construct customer object
         const employee = {
@@ -376,7 +377,7 @@
         });
     }
 
-    /!* /update customer/!*!/
+    /*/!* /update customer/!*!/*/
     $("#btnUpdateEmployee").click(function (){
         updateEmployee()
     })
@@ -390,7 +391,7 @@
         const role = document.getElementById('role').value;
         const dob = document.getElementById('dob').value;
         const joinDate = document.getElementById('joinDate').value;
-        const attachBranch = document.getElementById('attachBranch').value;
+        const attachedBranch = document.getElementById('attachBranch').value;
         const addressLine01 = document.getElementById('addressLine01').value;
         const addressLine02 = document.getElementById('addressLine02').value;
         const addressLine03 = document.getElementById('addressLine03').value;
@@ -409,7 +410,7 @@
             role: role,
             dob:dob,
             joinDate:joinDate,
-            attachBranch:attachBranch,
+            attachedBranch:attachedBranch,
             address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
             contact: contact,
             email: email,
@@ -462,21 +463,21 @@
 
         $("#employeeCode").val(code);
         $("#employeeName").val(name);
-        $("#employeeProfilePic").val(proPic);
+        $("#proPic").val(proPic);
         $("#gender").val(gender);
         $("#status").val(status);
         $("#designation").val(designation);
-        $("#accessRole").val(role);
+        $("#role").val(role);
         $("#dob").val(dob);
-        $("#dateOfJoin").val(joinDate);
+        $("#joinDate").val(joinDate);
         $("#attachedBranch").val(attachBranch);
         $("#addressLine01").val(address01);
         $("#addressLine02").val(address02);
         $("#addressLine03").val(address03);
-        $("#contactNo").val(contact);
+        $("#contact").val(contact);
         $("#email").val(email);
-        $("#emergencyContactPerson").val(guardian);
-        $("#emergencyContact").val(emergContact);
+        $("#guardian").val(guardian);
+        $("#emergContact").val(emergContact);
     })
 
     $(document).ready(function () {
@@ -538,7 +539,7 @@
                         let role = res.role;
                         let dob = res.dob;
                         let joinDate = res.joinDate;
-                        let attachBranch = res.attachBranch;
+                        let attachedBranch = res.attachedBranch;
                         let addressLine01 = res.addressLine01 ;
                         let addressLine02 = res.addressLine02 ;
                         let addressLine03 = res.addressLine03 ;
@@ -547,7 +548,7 @@
                         let guardian = res.guardian;
                         let emergContact = res.emergContact;
 
-                        let row = "<tr><td>" + employeeCode + "</td><td>" + employeeName + "</td><td>" + proPic + "</td><td>" + gender + "</td><td>" + status + "</td><td>" + designation + "</td><td>" + role + "</td><td>" + dob +"</td><td>" + joinDate +"</td><td>" + attachBranch + "</td><td>" + addressLine01 + "</td><td>" + addressLine02 + "</td><td>" + addressLine03 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + guardian + "</td></tr>" + emergContact + "</td></tr>";
+                        let row = "<tr><td>" + employeeCode + "</td><td>" + employeeName + "</td><td>" + proPic + "</td><td>" + gender + "</td><td>" + status + "</td><td>" + designation + "</td><td>" + role + "</td><td>" + dob +"</td><td>" + joinDate +"</td><td>" + attachedBranch + "</td><td>" + addressLine01 + "</td><td>" + addressLine02 + "</td><td>" + addressLine03 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + guardian + "</td></tr>" + emergContact + "</td></tr>";
                         $("#employeeTable").append(row);
                         blindClickEventsC();
                     } else {
@@ -564,12 +565,12 @@
                 }
             });
         }
-    });*/
+    });
 
 
-    getAllEmployees();
+   /* getAllEmployees();
 
-    /*/getAll Employees/*/
+    /!*!/getAll Employees/!*!/
     function getAllEmployees(){
         $.ajax({
             url: "http://localhost:8080/employee/getAllEmployees",
@@ -588,7 +589,7 @@
         })
     }
 
-    /*/load employee into table/*/
+    /!*!/load employee into table/!*!/
     function loadEmployeeDataInTable(employees) {
         var tableBody = document.getElementById("employeeTable");
         tableBody.innerHTML = "";
@@ -607,7 +608,7 @@
 
     }
 
-    /*/Save employee/*/
+    /!*!/Save employee/!*!/
 
     $(document).on("click", "#btnAddEmployee", function() {
         console.log("Button clicked");
@@ -668,7 +669,7 @@
         });
     }
 
-    /*/table click/*/
+    /!*!/table click/!*!/
     $('#employeeTable').on('click', 'tr', function (){
         var employeeCode = $(this).find('td:eq(0)').text();
         var employeeName = $(this).find('td:eq(1)').text();
@@ -771,7 +772,7 @@
         });
     }
 
-   /* /table click/*/
+   /!* /table click/!*!/
     $('#employeeTable').on('click', 'tr', function (){
         var employeeCode = $(this).find('td:eq(0)').text();
         var employeeName = $(this).find('td:eq(1)').text();
@@ -859,7 +860,7 @@
 
     function employeeCapitalizeFirstLetter(str) {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
+    }*/
 </script>
 
 </body>

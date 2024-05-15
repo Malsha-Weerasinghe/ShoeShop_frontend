@@ -64,7 +64,9 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-right: 60px;
+            background-color: white;
         }
         table, th, td {
             border: 1px solid #ccc;
@@ -72,10 +74,14 @@
         th, td {
             padding: 10px;
             text-align: left;
+            border: 1px solid #dddddd;
         }
         th {
             background-color: #DAA520;
             color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
         .backBtn {
             position: fixed; /* Set position to fixed */
@@ -130,8 +136,8 @@
         <label for="category">Category</label>
         <select id="category" name="category" required>
             <option value="">Select Category</option>
-            <option value="International">International</option>
-            <option value="Local">Local</option>
+            <option value="INTERNATIONAL">International</option>
+            <option value="LOCAL">Local</option>
         </select>
 
         <label for="addressLine01">Address Line 01</label>
@@ -143,15 +149,6 @@
         <label for="addressLine03">Address Line 03</label>
         <input type="text" id="addressLine03" name="addressLine03">
 
-        <label for="addressLine04">Address Line 04</label>
-        <input type="text" id="addressLine04" name="addressLine04">
-
-        <label for="addressLine05">Address Line 05</label>
-        <input type="text" id="addressLine05" name="addressLine05">
-
-        <label for="addressLine06">Address Line 06</label>
-        <input type="text" id="addressLine06" name="addressLine06">
-
         <label for="contactNo1">Contact No. 1</label>
         <input type="tel" id="contactNo1" name="contactNo1" required>
 
@@ -161,9 +158,9 @@
         <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
 
-        <button type="button" class="btn btn-success">Save</button>
-        <button type="button" class="btn btn-danger">Delete</button>
-        <button type="button" class="btn btn-warning">Update</button>
+        <button type="button" class="btn btn-success" id="btnAddSupplier">Save</button>
+        <button type="button" class="btn btn-danger" id="btnDeleteSupplier">Delete</button>
+        <button type="button" class="btn btn-warning" id="btnUpdateSupplier">Update</button>
     </form>
 
     <h2>Supplier Information Table</h2>
@@ -173,18 +170,13 @@
             <th>Supplier Code</th>
             <th>Supplier Name</th>
             <th>Category</th>
-            <th>Address Line 01</th>
-            <th>Address Line 02</th>
-            <th>Address Line 03</th>
-            <th>Address Line 04</th>
-            <th>Address Line 05</th>
-            <th>Address Line 06</th>
+            <th>Address</th>
             <th>Contact No.1</th>
             <th>Contact No.2</th>
             <th>Email</th>
         </tr>
         </thead>
-        <tbody id="supplierTableBody">
+        <tbody id="supplierTable">
         <!-- Supplier data will be populated here -->
         </tbody>
     </table>
@@ -192,10 +184,200 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     function goBack() {
         window.history.back();
     }
+
+    getAllSuppliers();
+
+    function getAllSuppliers(){
+        $.ajax({
+            url: "http://localhost:8080/supplier/getAllSuppliers",
+            method: "GET",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                console.log(response.length);
+                console.log("success to load suppliers");
+                loadSupplierDataInTable(response);
+            },
+            error: function (xhr, status, err) {
+                console.log("Fail to load suppliers");
+                console.log(err);
+            }
+        });
+    }
+
+    function loadSupplierDataInTable(suppliers) {
+        var tableBody = document.getElementById("supplierTable");
+        tableBody.innerHTML = "";
+
+        suppliers.forEach(function (supplier) {
+            var row = document.createElement("tr");
+
+            ["supplierCode", "supplierName", "category", "address", "contactNo1", "contactNo2", "email"].forEach(function (property) {
+                var cell = document.createElement("td");
+                cell.textContent = supplier[property];
+                row.appendChild(cell);
+            });
+            tableBody.appendChild(row);
+        });
+    }
+
+    function loadSupplierData(suppliers) {
+        var tableBody = document.getElementById("supplierTable");
+        tableBody.innerHTML = "";
+
+        suppliers.forEach(function(supplier) {
+            var row = document.createElement("tr");
+
+            ["supplierCode", "supplierName", "category", "address", "contactNo1", "contactNo2", "email"].forEach(function(property) {
+                var cell = document.createElement("td");
+                cell.textContent = supplier[property];
+                row.appendChild(cell);
+            });
+
+            tableBody.appendChild(row);
+        });
+    }
+
+    window.onload = function() {
+     /*   getAllSuppliers();*/
+        loadSupplierData();
+    };
+
+    function loadNextSupplierId(){
+        $.ajax({
+            url:"http://localhost:8080/supplier/nextId",
+            method:"GET",
+            success:function (response) {
+                console.log(response)
+                $("#cId").val(response);
+            },
+            error:function (xhr, status, error) {
+                console.log(error)
+            }
+        })
+    }
+
+    $("#btnAddSupplier").click(function (){
+        saveSupplier();
+    })
+
+    /* /save/*/
+    function saveSupplier(){
+        // Retrieve values from input fields
+        const supplierCode = $("#supplierCode").val();
+        const supplierName = $("#supplierName").val();
+        const category = $("#category").val();
+        const addressLine01 = $("#addressLine01").val();
+        const addressLine02 = $("#addressLine02").val();
+        const addressLine03 = $("#addressLine03").val();
+        const contactNo1 = $("#contactNo1").val();
+        const contactNo2 = $("#contactNo2").val();
+        const email = $("#email").val();
+
+        // Construct customer object
+        const supplier = {
+            supplierCode: supplierCode,
+            supplierName: supplierName,
+            category: category,
+            address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
+            contactNo1: contactNo1,
+            contactNo2: contactNo2,
+            email: email,
+        }
+
+        // Send AJAX request to save customer data
+        $.ajax({
+            url: 'http://localhost:8080/supplier/save',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(supplier),
+            success: function (response) {
+                console.log(response);
+                alert('Supplier information saved successfully!');
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert('Failed to save supplier information. Please try again.');
+            }
+        });
+    }
+
+    $("#btnUpdateSupplier").click(function (){
+        updateSupplier()
+    })
+    function updateSupplier() {
+        const supplierCode = document.getElementById('supplierCode').value;
+        const supplierName = document.getElementById('supplierName').value;
+        const category = document.getElementById('category').value;
+        const addressLine01 = document.getElementById('addressLine01').value;
+        const addressLine02 = document.getElementById('addressLine02').value;
+        const addressLine03 = document.getElementById('addressLine03').value;
+        const contactNo1 = document.getElementById('contactNo1').value;
+        const contactNo2 = document.getElementById('contactNo2').value;
+        const email = document.getElementById('email').value;
+
+        const supplier = {
+            supplierCode:supplierCode,
+            supplierName:supplierName,
+            category:category,
+            address:`${addressLine01},${addressLine02},${addressLine03}`,
+            contactNo1:contactNo1,
+            contactNo2:contactNo2,
+            email:email
+        }
+
+
+
+        $.ajax({
+            url: 'http://localhost:8080/supplier/update',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(supplier),
+            success: function (response) {
+                console.log(response);
+                /* /document.getElementById('customerForm').reset();/*/
+                alert('Supplier information update successfully!');
+
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert('Failed to update supplier information. Please try again.');
+            }
+        });
+    }
+
+    /table click/
+    $('#supplierTable').on('click', 'tr', function (){
+        var code = $(this).find('td:eq(0)').text();
+        var name = $(this).find('td:eq(1)').text();
+        var category = $(this).find('td:eq(2)').text();
+        var address = $(this).children().eq(3).text();
+
+        let addressComponents = address.split(', ');
+        let address1 = addressComponents[0] || '';
+        let address2 = addressComponents[1] || '';
+        let address3 = addressComponents[2] || '';
+
+        var contactNo1 = $(this).find('td:eq(4)').text();
+        var contactNo2 = $(this).find('td:eq(5)').text();
+        var email = $(this).find('td:eq(6)').text();
+
+        $("#supplierCode").val(code);
+        $("#supplierName").val(name);
+        $("#category").val(category);
+        $("#addressLine01").val(address1);
+        $("#addressLine02").val(address2);
+        $("#addressLine03").val(address3);
+        $("#contactNo1").val(contactNo1);
+        $("#contactNo2").val(contactNo2);
+        $("#email").val(email);
+    })
 
 
 
