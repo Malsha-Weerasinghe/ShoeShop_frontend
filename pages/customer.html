@@ -697,7 +697,8 @@
 
     var contact = $(this).find('td:eq(8)').text();
     var email = $(this).find('td:eq(9)').text();
-    var purchaseDateTime = $(this).children().eq(10).text();
+    var purchaseDateTime = $(this).find('td:eq(10)').text();
+   /* var purchaseDateTime = $(this).children().eq(10).text();*/
 
     $("#customerCode").val(code);
     $("#customerName").val(name);
@@ -823,13 +824,11 @@
             let addressLine1 = res.addressLine1 ;
             let addressLine2 = res.addressLine2 ;
             let addressLine3 = res.addressLine3 ;
-            let addressLine4 = res.addressLine4 ;
-            let addressLine5 = res.addressLine5 ;
             let contact = res.contact;
             let email = res.email;
             let purchaseDateTime = res.purchaseDateTime;
 
-            let row = "<tr><td>" + customerCode + "</td><td>" + customerName + "</td><td>" + gender + "</td><td>" + joinDate + "</td><td>" + level + "</td><td>" + totPoints + "</td><td>" + dob + "</td><td>" + addressLine1 + "</td><td>" + addressLine2 + "</td><td>" + addressLine3 + "</td><td>" + addressLine4 + "</td><td>" + addressLine5 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + purchaseDateTime + "</td></tr>";
+            let row = "<tr><td>" + customerCode + "</td><td>" + customerName + "</td><td>" + gender + "</td><td>" + joinDate + "</td><td>" + level + "</td><td>" + totPoints + "</td><td>" + dob + "</td><td>" + addressLine1 + "</td><td>" + addressLine2 + "</td><td>" + addressLine3 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + purchaseDateTime + "</td></tr>";
             $("#customerTable").append(row);
             blindClickEventsC();
           } else {

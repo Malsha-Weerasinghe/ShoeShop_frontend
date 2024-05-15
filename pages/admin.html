@@ -64,7 +64,9 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-right: 60px;
+      background-color: white;
     }
     table, th, td {
       border: 1px solid #ccc;
@@ -72,10 +74,14 @@
     th, td {
       padding: 10px;
       text-align: left;
+      border: 1px solid #dddddd;
     }
     th {
       background-color: #DAA520;
       color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
     .backBtn {
       position: fixed; /* Set position to fixed */
