@@ -240,7 +240,7 @@
       var row = document.createElement("tr");
 
       ["item_code", "itemDescription", "itemPic","category", "size", "supplierCode", "supplierName", "unitPriceSale",
-        "unitPriceBuy", "qty", "expectedProfit","profitMargin","status"].forEach(function(property) {
+        "unitPriceBuy","qty", "expectedProfit","profitMargin","status"].forEach(function(property) {
         var cell = document.createElement("td");
         cell.textContent = item[property];
         row.appendChild(cell);
