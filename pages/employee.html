@@ -148,9 +148,9 @@
 
         <label for="gender">Gender</label>
         <select id="gender" name="gender">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="OTHER">Other</option>
         </select>
 
         <label for="status">Status</label>
@@ -200,7 +200,7 @@
 
         <input type="file" id="imgInput" accept="image/*" style="display: none">-->
 
-        <button type="button" class="btn btn-success" id="btnAddEmployee">Save</button>
+        <button type="button" class="btn btn-success" id="btnAddEmployee" >Save</button>
         <button type="button" class="btn btn-danger" id="btnDeleteEmployee">Delete</button>
         <button type="button" class="btn btn-warning" id="btnUpdateEmployee">Update</button>
     </form>
@@ -244,7 +244,7 @@
         window.history.back();
     }
 
-    getAllEmployees();
+
 
     function getAllEmployees(){
         $.ajax({
@@ -280,47 +280,10 @@
         });
     }
 
-    function loadEmployeeData(employees) {
-        var tableBody = document.getElementById("employeeTable");
-        tableBody.innerHTML = "";
-
-        employees.forEach(function(employee) {
-            var row = document.createElement("tr");
-
-            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "dob", "joinDate", "attachedBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function(property) {
-                var cell = document.createElement("td");
-                cell.textContent = employee[property];
-                row.appendChild(cell);
-            });
-
-            tableBody.appendChild(row);
-        });
-    }
-
-    window.onload = function() {
-        /*   getAllSuppliers();*/
-        loadEmployeeData();
-    };
-    //!*next id!/
-    function loadNextEmployeeId(){
-        $.ajax({
-            url:"http://localhost:8080/employee/nextId",
-            method:"GET",
-            success:function (response) {
-                console.log(response)
-                $("#cId").val(response);
-            },
-            error:function (xhr, status, error) {
-                console.log(error)
-            }
-        })
-    }
-
-    $("#btnAddEmployee").click(function (){
+    $("#btnUpdateEmployee").click(function (){
         saveEmployee();
     })
 
-   /* /!* /save/!*!/*/
     function saveEmployee(){
         // Retrieve values from input fields
         const employeeCode = $("#employeeCode").val();
@@ -328,39 +291,39 @@
         const proPic = $("#proPic").val();
         const gender = $("#gender").val();
         const status = $("#status").val();
-        const designation = $("#designation").val(); // Ensure totPoints is treated as an integer
-        const role = $("#accessRole").val();
+        const designation = $("#designation").val();
+        const role = $("#role").val();
         const dob = $("#dob").val();
         const joinDate = $("#joinDate").val();
         const attachBranch = $("#attachedBranch").val();
         const addressLine01 = $("#addressLine01").val();
         const addressLine02 = $("#addressLine02").val();
         const addressLine03 = $("#addressLine03").val();
-        const contact = $("#contactNo").val();
+        const contact = $("#contact").val();
         const email = $("#email").val();
         const guardian = $("#guardian").val();
         const emergContact = $("#emergContact").val();
 
-        // Construct customer object
+        // Construct employee object
         const employee = {
             employeeCode: employeeCode,
             employeeName: employeeName,
             proPic: proPic,
             gender: gender,
             status: status,
-            designation: designation, // Ensure the field name matches the backend expectation
+            designation: designation,
             role: role,
-            dob:dob,
-            joinDate:joinDate,
-            attachBranch:attachBranch,
+            dob: dob,
+            joinDate: joinDate,
+            attachedBranch: attachBranch,
             address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
             contact: contact,
             email: email,
             guardian: guardian,
-            emergContact:emergContact
-        }
+            emergContact: emergContact
+        };
 
-        // Send AJAX request to save customer data
+        // Send AJAX request to save employee data
         $.ajax({
             url: 'http://localhost:8080/employee/save',
             type: 'POST',
@@ -369,6 +332,7 @@
             success: function (response) {
                 console.log(response);
                 alert('Employee information saved successfully!');
+                getAllEmployees(); // Reload employee data after saving
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -377,49 +341,46 @@
         });
     }
 
-    /*/!* /update customer/!*!/*/
-    $("#btnUpdateEmployee").click(function (){
-        updateEmployee()
-    })
     function updateEmployee() {
-        const employeeCode = document.getElementById('employeeCode').value;
-        const employeeName = document.getElementById('employeeName').value;
-        const proPic = document.getElementById('proPic').value;
-        const gender = document.getElementById('gender').value;
-        const status= document.getElementById('status').value;
-        const designation = document.getElementById('designation').value;
-        const role = document.getElementById('role').value;
-        const dob = document.getElementById('dob').value;
-        const joinDate = document.getElementById('joinDate').value;
-        const attachedBranch = document.getElementById('attachBranch').value;
-        const addressLine01 = document.getElementById('addressLine01').value;
-        const addressLine02 = document.getElementById('addressLine02').value;
-        const addressLine03 = document.getElementById('addressLine03').value;
-        const contact = document.getElementById('contact').value;
-        const email = document.getElementById('email').value;
-        const guardian = document.getElementById('guardian').value;
-        const emergContact = document.getElementById('emergContact').value;
+        // Retrieve values from input fields
+        const employeeCode = $("#employeeCode").val();
+        const employeeName = $("#employeeName").val();
+        const proPic = $("#proPic").val();
+        const gender = $("#gender").val();
+        const status = $("#status").val();
+        const designation = $("#designation").val();
+        const role = $("#role").val();
+        const dob = $("#dob").val();
+        const joinDate = $("#joinDate").val();
+        const attachBranch = $("#attachedBranch").val();
+        const addressLine01 = $("#addressLine01").val();
+        const addressLine02 = $("#addressLine02").val();
+        const addressLine03 = $("#addressLine03").val();
+        const contact = $("#contact").val();
+        const email = $("#email").val();
+        const guardian = $("#guardian").val();
+        const emergContact = $("#emergContact").val();
 
+        // Construct employee object
         const employee = {
             employeeCode: employeeCode,
             employeeName: employeeName,
             proPic: proPic,
             gender: gender,
             status: status,
-            designation: designation, // Ensure the field name matches the backend expectation
+            designation: designation,
             role: role,
-            dob:dob,
-            joinDate:joinDate,
-            attachedBranch:attachedBranch,
+            dob: dob,
+            joinDate: joinDate,
+            attachedBranch: attachBranch,
             address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
             contact: contact,
             email: email,
             guardian: guardian,
-            emergContact:emergContact
-        }
+            emergContact: emergContact
+        };
 
-
-
+        // Send AJAX request to update employee data
         $.ajax({
             url: 'http://localhost:8080/employee/update',
             type: 'POST',
@@ -427,8 +388,8 @@
             data: JSON.stringify(employee),
             success: function (response) {
                 console.log(response);
-                alert('Employee information update successfully!');
-
+                alert('Employee information updated successfully!');
+                getAllEmployees(); // Reload employee data after updating
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -437,70 +398,14 @@
         });
     }
 
-    /table click/
-    $('#employeeTable').on('click', 'tr', function (){
-        var code = $(this).find('td:eq(0)').text();
-        var name = $(this).find('td:eq(1)').text();
-        var proPic = $(this).find('td:eq(2)').text();
-        var gender = $(this).find('td:eq(3)').text();
-        var status = $(this).find('td:eq(4)').text();
-        var designation = $(this).find('td:eq(5)').text();
-        var role = $(this).find('td:eq(6)').text();
-        var dob = $(this).find('td:eq(7)').text();
-        var joinDate = $(this).find('td:eq(8)').text();
-        var attachBranch = $(this).find('td:eq(9)').text();
-        var address = $(this).children().eq(10).text();
-
-        let addressComponents = address.split(', ');
-        let address01 = addressComponents[0] || '';
-        let address02 = addressComponents[1] || '';
-        let address03 = addressComponents[2] || '';
-
-        var contact = $(this).find('td:eq(11)').text();
-        var email = $(this).find('td:eq(12)').text();
-        var guardian = $(this).find('td:eq(13)').text();
-        var emergContact = $(this).find('td:eq(14)').text();
-
-        $("#employeeCode").val(code);
-        $("#employeeName").val(name);
-        $("#proPic").val(proPic);
-        $("#gender").val(gender);
-        $("#status").val(status);
-        $("#designation").val(designation);
-        $("#role").val(role);
-        $("#dob").val(dob);
-        $("#joinDate").val(joinDate);
-        $("#attachedBranch").val(attachBranch);
-        $("#addressLine01").val(address01);
-        $("#addressLine02").val(address02);
-        $("#addressLine03").val(address03);
-        $("#contact").val(contact);
-        $("#email").val(email);
-        $("#guardian").val(guardian);
-        $("#emergContact").val(emergContact);
-    })
-
-    $(document).ready(function () {
-        getAllEmployee();
-
-        $('#btnDeleteEmployee').on('click', function() {
-            var employeeCode = $('#employeeCode').val();
-            if (employeeCode !== "") {
-                deleteEmployee(employeeCode);
-            } else {
-                alert("Please select a employee to delete.");
-            }
-        });
-    });
-
     function deleteEmployee(employeeCode) {
         $.ajax({
-            url: `http://localhost:8080/employee/delete/${employeeCode}`, // Use backticks for template literal
+            url: `http://localhost:8080/employee/delete/${employeeCode}`,
             type: 'DELETE',
             success: function (response) {
                 console.log(response);
                 alert('Employee deleted successfully!');
-                getAllCustomers();
+                getAllEmployees(); // Reload employee data after deletion
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -510,357 +415,638 @@
     }
 
     $(document).ready(function () {
-        getAllEmployee();
-    });
+        getAllEmployees(); // Load employee data when the document is ready
 
-    function employeeCapitalizeFirstLetter(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
-
-    $("#searchEmployee").on("keypress", function (event) {
-        if (event.which === 13) {
-            var search = $("#searchEmployee").val();
-            $("#employeeTable").empty();
-            $.ajax({
-                url: "http://localhost:8080/employee/search",
-                method: "GET",
-                contentType: "application/json",
-                dataType: "json",
-                data: { code: search }, // Send the search parameter as an object
-                success: function (res) {
-                    console.log(res);
-                    if (res) {
-                        let employeeCode = res.employeeCode;
-                        let employeeName = res.employeeName;
-                        let proPic = res.proPic;
-                        let gender = res.gender;
-                        let status = res.status;
-                        let designation = res.designation;
-                        let role = res.role;
-                        let dob = res.dob;
-                        let joinDate = res.joinDate;
-                        let attachedBranch = res.attachedBranch;
-                        let addressLine01 = res.addressLine01 ;
-                        let addressLine02 = res.addressLine02 ;
-                        let addressLine03 = res.addressLine03 ;
-                        let contact = res.contact;
-                        let email = res.email;
-                        let guardian = res.guardian;
-                        let emergContact = res.emergContact;
-
-                        let row = "<tr><td>" + employeeCode + "</td><td>" + employeeName + "</td><td>" + proPic + "</td><td>" + gender + "</td><td>" + status + "</td><td>" + designation + "</td><td>" + role + "</td><td>" + dob +"</td><td>" + joinDate +"</td><td>" + attachedBranch + "</td><td>" + addressLine01 + "</td><td>" + addressLine02 + "</td><td>" + addressLine03 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + guardian + "</td></tr>" + emergContact + "</td></tr>";
-                        $("#employeeTable").append(row);
-                        blindClickEventsC();
-                    } else {
-                        // No data found
-                        console.log("No data found");
-                        // Handle this case if required
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error:", error);
-                    loadAllEmployee(); // Load all customers as fallback
-                    let message = xhr.responseJSON ? xhr.responseJSON.message : "An error occurred";
-                    emptyMassage(message);
-                }
-            });
-        }
-    });
-
-
-   /* getAllEmployees();
-
-    /!*!/getAll Employees/!*!/
-    function getAllEmployees(){
-        $.ajax({
-            url: "http://localhost:8080/employee/getAllEmployees",
-            method: "GET",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                console.log(response.length);
-                console.log("success to load employees")
-                loadEmployeeDataInTable(response);
-            },
-            error: function (xhr, status, err) {
-                console.log("Fail to load employees")
-                console.log(err)
-            }
-        })
-    }
-
-    /!*!/load employee into table/!*!/
-    function loadEmployeeDataInTable(employees) {
-        var tableBody = document.getElementById("employeeTable");
-        tableBody.innerHTML = "";
-
-        employees.forEach(function (employee) {
-            var row = document.createElement("tr");
-
-            ["employeeCode", "employeeName", "proPic", "gender", "status", "attachedBranch", "designation", "role",
-                "dob", "joinDate", "address", "contact", "email", "guardian", "emergContact"].forEach(function (property) {
-                var cell = document.createElement("td");
-                cell.textContent = employee[property];
-                row.appendChild(cell);
-            });
-            tableBody.appendChild(row);
-        });
-
-    }
-
-    /!*!/Save employee/!*!/
-
-    $(document).on("click", "#btnAddEmployee", function() {
-        console.log("Button clicked");
-        saveEmployee();
-    });
-
-    function saveEmployee(){
-        const employeeCode = document.getElementById('employeeCode').value;
-        const employeeName = document.getElementById('employeeName').value;
-        const proPic = document.getElementById('proPic').value;
-        const gender = document.getElementById('gender').value;
-        const status= document.getElementById('status').value;
-        const attachedBranch = document.getElementById('attachedBranch').value;
-        const designation = document.getElementById('designation').value;
-        const role = document.getElementById('role').value;
-        const dob = document.getElementById('dob').value;
-        const joinDate = document.getElementById('joinDate').value;
-        const addressLine01 = $("#addressLine01").val();
-        const addressLine02 = $("#addressLine02").val();
-        const addressLine03 = $("#addressLine03").val();
-        const contact = document.getElementById('contact').value;
-        const email = document.getElementById('email').value;
-        const guardian = document.getElementById('guardian').value;
-        const emergContact = document.getElementById('emergContact').value;
-
-        const employee = {
-                employeeCode:employeeCode,
-                employeeName:employeeName,
-                proPic:proPic,
-                gender:gender,
-                status:status,
-                attachedBranch:attachedBranch,
-                designation:designation,
-                role:role,
-                dob:dob,
-                joinDate:joinDate,
-                address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
-                contact:contact,
-                email:email,
-                guardian:guardian,
-                emergContact:emergContact
-    }
-
-        $.ajax({
-            url: 'http://localhost:8080/employee/save',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(employee),
-            success: function (response) {
-                console.log(response);
-                alert('Employees information saved successfully!');
-                getAllEmployees();
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-                alert('Failed to save employee information. Please try again.');
-            }
-        });
-    }
-
-    /!*!/table click/!*!/
-    $('#employeeTable').on('click', 'tr', function (){
-        var employeeCode = $(this).find('td:eq(0)').text();
-        var employeeName = $(this).find('td:eq(1)').text();
-        var proPic = $(this).find('td:eq(2)').text();
-        var gender = $(this).find('td:eq(3)').text();
-        var status = $(this).find('td:eq(4)').text();
-        var attachedBranch = $(this).find('td:eq(5)').text();
-        var designation = $(this).find('td:eq(6)').text();
-        var role = $(this).find('td:eq(7)').text();
-        var dob = $(this).find('td:eq(8)').text();
-        var joinDate = $(this).find('td:eq(9)').text();
-        var address = $(this).children().eq(10).text();
-
-        let addressComponents = address.split(', ');
-        let address01 = addressComponents[0] || '';
-        let address02 = addressComponents[1] || '';
-        let address03 = addressComponents[2] || '';
-
-        var contact = $(this).find('td:eq(11)').text();
-        var email = $(this).find('td:eq(12)').text();
-        var guardian = $(this).find('td:eq(13)').text();
-        var emergContact = $(this).find('td:eq(14)').text();
-
-        $("#employeeCode").val(employeeCode);
-        $("#employeeName").val(employeeName);
-        $("#proPic").val(proPic);
-        $("#gender").val(gender);
-        $("#status").val(status);
-        $("#attachedBranch").val(attachedBranch);
-        $("#designation").val(designation);
-        $("#role").val(role);
-        $("#dob").val(dob);
-        $("#joinDate").val(joinDate);
-        $("#addressLine01").val(address01);
-        $("#addressLine02").val(address02);
-        $("#addressLine03").val(address03);
-        $("#contact").val(contact);
-        $("#email").val(email);
-        $("#guardian").val(guardian);
-        $("#emergContact").val(emergContact);
-
-    })
-
-    $(document).on("click", "#btnUpdateEmployee", function() {
-        console.log("Button clicked");
-        updateEmployee();
-    });
-
-    function updateEmployee(){
-        const employeeCode = document.getElementById('employeeCode').value;
-        const employeeName = document.getElementById('employeeName').value;
-        const proPic = document.getElementById('proPic').value;
-        const gender = document.getElementById('gender').value;
-        const status= document.getElementById('status').value;
-        const attachedBranch = document.getElementById('attachedBranch').value;
-        const designation = document.getElementById('designation').value;
-        const role = document.getElementById('role').value;
-        const dob = document.getElementById('dob').value;
-        const joinDate = document.getElementById('joinDate').value;
-        const addressLine01 = document.getElementById('addressLine01').value;
-        const addressLine02 = document.getElementById('addressLine02').value;
-        const addressLine03 = document.getElementById('addressLine03').value;
-        const contact = document.getElementById('contact').value;
-        const email = document.getElementById('email').value;
-        const guardian = document.getElementById('guardian').value;
-        const emergContact = document.getElementById('emergContact').value;
-
-        const employee = {
-                employeeCode:employeeCode,
-                employeeName:employeeName,
-                proPic:proPic,
-                gender:gender,
-                status:status,
-                attachedBranch:attachedBranch,
-                designation:designation,
-                role:role,
-                dob:dob,
-                joinDate:joinDate,
-                address:`${addressLine01},${addressLine02},${addressLine03}`,
-                contact:contact,
-                email:email,
-                guardian:guardian,
-                emergContact:emergContact
-    }
-
-        $.ajax({
-            url: 'http://localhost:8080/employee/update',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(employee),
-            success: function (response) {
-                console.log(response);
-                alert('Employees information updated successfully!');
-                getAllEmployees();
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-                alert('Failed to save employee information. Please try again.');
-            }
-        });
-    }
-
-   /!* /table click/!*!/
-    $('#employeeTable').on('click', 'tr', function (){
-        var employeeCode = $(this).find('td:eq(0)').text();
-        var employeeName = $(this).find('td:eq(1)').text();
-        var proPic = $(this).find('td:eq(2)').text();
-        var gender = $(this).find('td:eq(3)').text();
-        var status = $(this).find('td:eq(4)').text();
-        var attachedBranch = $(this).find('td:eq(5)').text();
-        var designation = $(this).find('td:eq(6)').text();
-        var role = $(this).find('td:eq(7)').text();
-        var dob = $(this).find('td:eq(8)').text();
-        var joinDate = $(this).find('td:eq(9)').text();
-        var address = $(this).children().eq(10).text();
-
-        let addressComponents = address.split(', ');
-        let address01 = addressComponents[0] || '';
-        let address02 = addressComponents[1] || '';
-        let address03 = addressComponents[2] || '';
-
-        var contact = $(this).find('td:eq(11)').text();
-        var email = $(this).find('td:eq(12)').text();
-        var guardian = $(this).find('td:eq(13)').text();
-        var emergContact = $(this).find('td:eq(14)').text();
-
-        $("#employeeCode").val(employeeCode);
-        $("#employeeName").val(employeeName);
-        $("#proPic").val(proPic);
-        $("#gender").val(gender);
-        $("#status").val(status);
-        $("#attachedBranch").val(attachedBranch);
-        $("#designation").val(designation);
-        $("#role").val(role);
-        $("#dob").val(dob);
-        $("#joinDate").val(joinDate);
-        $("#addressLine01").val(address01);
-        $("#addressLine02").val(address02);
-        $("#addressLine03").val(address03);
-        $("#contact").val(contact);
-        $("#email").val(email);
-        $("#guardian").val(guardian);
-        $("#emergContact").val(emergContact);
-    })
-
-    $(document).ready(function () {
-        getAllEmployee();
-
+        // Bind click event to delete button
         $('#btnDeleteEmployee').on('click', function() {
             var employeeCode = $('#employeeCode').val();
             if (employeeCode !== "") {
                 deleteEmployee(employeeCode);
             } else {
-                alert("Please select a employee to delete.");
+                alert("Please select an employee to delete.");
             }
         });
     });
 
-        $('#btnEmployeeDelete').on('click', function() {
-            var employeeCode = $('#employeeCode').val();
-            if (employeeCode !== "") {
-                deleteEmployee(employeeCode);
-            } else {
-                alert("Please select a employee to delete.");
-            }
 
-    });
-
-    function deleteEmployee(employeeCode) {
-        $.ajax({
-            url: `http://localhost:8080/employee/delete/${employeeCode}`, // Use backticks for template literal
-            type: 'DELETE',
-            success: function (response) {
-                console.log(response);
-                alert('Employee deleted successfully!');
-                getAllCustomers();
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-                alert('Failed to delete employee. Please try again.');
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        getAllEmployees();
-    });
-
-    function employeeCapitalizeFirstLetter(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }*/
+    //    getAllEmployees();
+ //
+ //    function getAllEmployees(){
+ //        $.ajax({
+ //            url: "http://localhost:8080/employee/getAllEmployees",
+ //            method: "GET",
+ //            dataType: "json",
+ //            success: function (response) {
+ //                console.log(response);
+ //                console.log(response.length);
+ //                console.log("success to load employees");
+ //                loadEmployeeDataInTable(response);
+ //            },
+ //            error: function (xhr, status, err) {
+ //                console.log("Fail to load employees");
+ //                console.log(err);
+ //            }
+ //        });
+ //    }
+ //
+ //    function loadEmployeeDataInTable(employees) {
+ //        var tableBody = document.getElementById("employeeTable");
+ //        tableBody.innerHTML = "";
+ //
+ //        employees.forEach(function (employee) {
+ //            var row = document.createElement("tr");
+ //
+ //            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "dob", "joinDate", "attachedBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function (property) {
+ //                var cell = document.createElement("td");
+ //                cell.textContent = employee[property];
+ //                row.appendChild(cell);
+ //            });
+ //            tableBody.appendChild(row);
+ //        });
+ //    }
+ //
+ // /*   function loadEmployeeData(employees) {
+ //        var tableBody = document.getElementById("employeeTable");
+ //        tableBody.innerHTML = "";
+ //
+ //        employees.forEach(function(employee) {
+ //            var row = document.createElement("tr");
+ //
+ //            ["employeeCode", "employeeName", "proPic", "gender", "status", "designation", "role", "dob", "joinDate", "attachedBranch", "address", "contact", "email", "guardian", "emergContact"].forEach(function(property) {
+ //                var cell = document.createElement("td");
+ //                cell.textContent = employee[property];
+ //                row.appendChild(cell);
+ //            });
+ //
+ //            tableBody.appendChild(row);
+ //        });
+ //    }*/
+ //
+ //    window.onload = function() {
+ //        /*   getAllSuppliers();*/
+ //      /*  loadEmployeeData();*/
+ //        loadEmployeeDataInTable();
+ //    };
+ //    //!*next id!/
+ //    function loadNextEmployeeId(){
+ //        $.ajax({
+ //            url:"http://localhost:8080/employee/nextId",
+ //            method:"GET",
+ //            success:function (response) {
+ //                console.log(response)
+ //                $("#cId").val(response);
+ //            },
+ //            error:function (xhr, status, error) {
+ //                console.log(error)
+ //            }
+ //        })
+ //    }
+ //
+ //    $("#btnAddEmployee").click(function (){
+ //        saveEmployee();
+ //    })
+ //
+ //   /* /!* /save/!*!/*/
+ //    function saveEmployee(){
+ //        // Retrieve values from input fields
+ //        const employeeCode = $("#employeeCode").val();
+ //        const employeeName = $("#employeeName").val();
+ //        const proPic = $("#proPic").val();
+ //        const gender = $("#gender").val();
+ //        const status = $("#status").val();
+ //        const designation = $("#designation").val(); // Ensure totPoints is treated as an integer
+ //        const role = $("#accessRole").val();
+ //        const dob = $("#dob").val();
+ //        const joinDate = $("#joinDate").val();
+ //        const attachBranch = $("#attachedBranch").val();
+ //        const addressLine01 = $("#addressLine01").val();
+ //        const addressLine02 = $("#addressLine02").val();
+ //        const addressLine03 = $("#addressLine03").val();
+ //        const contact = $("#contactNo").val();
+ //        const email = $("#email").val();
+ //        const guardian = $("#guardian").val();
+ //        const emergContact = $("#emergContact").val();
+ //
+ //        // Construct customer object
+ //        const employee = {
+ //            employeeCode: employeeCode,
+ //            employeeName: employeeName,
+ //            proPic: proPic,
+ //            gender: gender,
+ //            status: status,
+ //            designation: designation, // Ensure the field name matches the backend expectation
+ //            role: role,
+ //            dob:dob,
+ //            joinDate:joinDate,
+ //            attachBranch:attachBranch,
+ //            address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
+ //            contact: contact,
+ //            email: email,
+ //            guardian: guardian,
+ //            emergContact:emergContact
+ //        }
+ //
+ //        // Send AJAX request to save customer data
+ //        $.ajax({
+ //            url: 'http://localhost:8080/employee/save',
+ //            type: 'POST',
+ //            contentType: 'application/json',
+ //            data: JSON.stringify(employee),
+ //            success: function (response) {
+ //                console.log(response);
+ //                alert('Employee information saved successfully!');
+ //            },
+ //            error: function (xhr, status, error) {
+ //                console.error(error);
+ //                alert('Failed to save employee information. Please try again.');
+ //            }
+ //        });
+ //    }
+ //
+ //    /*/!* /update customer/!*!/*/
+ //    $("#btnUpdateEmployee").click(function (){
+ //        updateEmployee()
+ //    })
+ //    function updateEmployee() {
+ //        const employeeCode = document.getElementById('employeeCode').value;
+ //        const employeeName = document.getElementById('employeeName').value;
+ //        const proPic = document.getElementById('proPic').value;
+ //        const gender = document.getElementById('gender').value;
+ //        const status= document.getElementById('status').value;
+ //        const designation = document.getElementById('designation').value;
+ //        const role = document.getElementById('role').value;
+ //        const dob = document.getElementById('dob').value;
+ //        const joinDate = document.getElementById('joinDate').value;
+ //        const attachedBranch = document.getElementById('attachBranch').value;
+ //        const addressLine01 = document.getElementById('addressLine01').value;
+ //        const addressLine02 = document.getElementById('addressLine02').value;
+ //        const addressLine03 = document.getElementById('addressLine03').value;
+ //        const contact = document.getElementById('contact').value;
+ //        const email = document.getElementById('email').value;
+ //        const guardian = document.getElementById('guardian').value;
+ //        const emergContact = document.getElementById('emergContact').value;
+ //
+ //        const employee = {
+ //            employeeCode: employeeCode,
+ //            employeeName: employeeName,
+ //            proPic: proPic,
+ //            gender: gender,
+ //            status: status,
+ //            designation: designation, // Ensure the field name matches the backend expectation
+ //            role: role,
+ //            dob:dob,
+ //            joinDate:joinDate,
+ //            attachedBranch:attachedBranch,
+ //            address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
+ //            contact: contact,
+ //            email: email,
+ //            guardian: guardian,
+ //            emergContact:emergContact
+ //        }
+ //
+ //
+ //
+ //        $.ajax({
+ //            url: 'http://localhost:8080/employee/update',
+ //            type: 'POST',
+ //            contentType: 'application/json',
+ //            data: JSON.stringify(employee),
+ //            success: function (response) {
+ //                console.log(response);
+ //                alert('Employee information update successfully!');
+ //
+ //            },
+ //            error: function (xhr, status, error) {
+ //                console.error(error);
+ //                alert('Failed to update employee information. Please try again.');
+ //            }
+ //        });
+ //    }
+ //
+ //    /table click/
+ //    $('#employeeTable').on('click', 'tr', function (){
+ //        var code = $(this).find('td:eq(0)').text();
+ //        var name = $(this).find('td:eq(1)').text();
+ //        var proPic = $(this).find('td:eq(2)').text();
+ //        var gender = $(this).find('td:eq(3)').text();
+ //        var status = $(this).find('td:eq(4)').text();
+ //        var designation = $(this).find('td:eq(5)').text();
+ //        var role = $(this).find('td:eq(6)').text();
+ //        var dob = $(this).find('td:eq(7)').text();
+ //        var joinDate = $(this).find('td:eq(8)').text();
+ //        var attachBranch = $(this).find('td:eq(9)').text();
+ //        var address = $(this).children().eq(10).text();
+ //
+ //        let addressComponents = address.split(', ');
+ //        let address01 = addressComponents[0] || '';
+ //        let address02 = addressComponents[1] || '';
+ //        let address03 = addressComponents[2] || '';
+ //
+ //        var contact = $(this).find('td:eq(11)').text();
+ //        var email = $(this).find('td:eq(12)').text();
+ //        var guardian = $(this).find('td:eq(13)').text();
+ //        var emergContact = $(this).find('td:eq(14)').text();
+ //
+ //        $("#employeeCode").val(code);
+ //        $("#employeeName").val(name);
+ //        $("#proPic").val(proPic);
+ //        $("#gender").val(gender);
+ //        $("#status").val(status);
+ //        $("#designation").val(designation);
+ //        $("#role").val(role);
+ //        $("#dob").val(dob);
+ //        $("#joinDate").val(joinDate);
+ //        $("#attachedBranch").val(attachBranch);
+ //        $("#addressLine01").val(address01);
+ //        $("#addressLine02").val(address02);
+ //        $("#addressLine03").val(address03);
+ //        $("#contact").val(contact);
+ //        $("#email").val(email);
+ //        $("#guardian").val(guardian);
+ //        $("#emergContact").val(emergContact);
+ //    })
+ //
+ //    $(document).ready(function () {
+ //        getAllEmployees();
+ //
+ //        $('#btnDeleteEmployee').on('click', function() {
+ //            var employeeCode = $('#employeeCode').val();
+ //            if (employeeCode !== "") {
+ //                deleteEmployee(employeeCode);
+ //            } else {
+ //                alert("Please select a employee to delete.");
+ //            }
+ //        });
+ //    });
+ //
+ //    function deleteEmployee(employeeCode) {
+ //        $.ajax({
+ //            url: `http://localhost:8080/employee/delete/${employeeCode}`, // Use backticks for template literal
+ //            type: 'DELETE',
+ //            success: function (response) {
+ //                console.log(response);
+ //                alert('Employee deleted successfully!');
+ //                getAllCustomers();
+ //            },
+ //            error: function (xhr, status, error) {
+ //                console.error(error);
+ //                alert('Failed to delete employee. Please try again.');
+ //            }
+ //        });
+ //    }
+ //
+ //    $(document).ready(function () {
+ //        getAllEmployees();
+ //    });
+ //
+ //    function employeeCapitalizeFirstLetter(str) {
+ //        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+ //    }
+ //
+ //    $("#searchEmployee").on("keypress", function (event) {
+ //        if (event.which === 13) {
+ //            var search = $("#searchEmployee").val();
+ //            $("#employeeTable").empty();
+ //            $.ajax({
+ //                url: "http://localhost:8080/employee/search",
+ //                method: "GET",
+ //                contentType: "application/json",
+ //                dataType: "json",
+ //                data: { code: search }, // Send the search parameter as an object
+ //                success: function (res) {
+ //                    console.log(res);
+ //                    if (res) {
+ //                        let employeeCode = res.employeeCode;
+ //                        let employeeName = res.employeeName;
+ //                        let proPic = res.proPic;
+ //                        let gender = res.gender;
+ //                        let status = res.status;
+ //                        let designation = res.designation;
+ //                        let role = res.role;
+ //                        let dob = res.dob;
+ //                        let joinDate = res.joinDate;
+ //                        let attachedBranch = res.attachedBranch;
+ //                        let addressLine01 = res.addressLine01 ;
+ //                        let addressLine02 = res.addressLine02 ;
+ //                        let addressLine03 = res.addressLine03 ;
+ //                        let contact = res.contact;
+ //                        let email = res.email;
+ //                        let guardian = res.guardian;
+ //                        let emergContact = res.emergContact;
+ //
+ //                        let row = "<tr><td>" + employeeCode + "</td><td>" + employeeName + "</td><td>" + proPic + "</td><td>" + gender + "</td><td>" + status + "</td><td>" + designation + "</td><td>" + role + "</td><td>" + dob +"</td><td>" + joinDate +"</td><td>" + attachedBranch + "</td><td>" + addressLine01 + "</td><td>" + addressLine02 + "</td><td>" + addressLine03 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + guardian + "</td></tr>" + emergContact + "</td></tr>";
+ //                        $("#employeeTable").append(row);
+ //                        blindClickEventsC();
+ //                    } else {
+ //                        // No data found
+ //                        console.log("No data found");
+ //                        // Handle this case if required
+ //                    }
+ //                },
+ //                error: function (xhr, status, error) {
+ //                    console.error("Error:", error);
+ //                    loadAllEmployee(); // Load all customers as fallback
+ //                    let message = xhr.responseJSON ? xhr.responseJSON.message : "An error occurred";
+ //                    emptyMassage(message);
+ //                }
+ //            });
+ //        }
+ //    });
+ //
+ //
+ //   /* getAllEmployees();
+ //
+ //    /!*!/getAll Employees/!*!/
+ //    function getAllEmployees(){
+ //        $.ajax({
+ //            url: "http://localhost:8080/employee/getAllEmployees",
+ //            method: "GET",
+ //            dataType: "json",
+ //            success: function (response) {
+ //                console.log(response);
+ //                console.log(response.length);
+ //                console.log("success to load employees")
+ //                loadEmployeeDataInTable(response);
+ //            },
+ //            error: function (xhr, status, err) {
+ //                console.log("Fail to load employees")
+ //                console.log(err)
+ //            }
+ //        })
+ //    }
+ //
+ //    /!*!/load employee into table/!*!/
+ //    function loadEmployeeDataInTable(employees) {
+ //        var tableBody = document.getElementById("employeeTable");
+ //        tableBody.innerHTML = "";
+ //
+ //        employees.forEach(function (employee) {
+ //            var row = document.createElement("tr");
+ //
+ //            ["employeeCode", "employeeName", "proPic", "gender", "status", "attachedBranch", "designation", "role",
+ //                "dob", "joinDate", "address", "contact", "email", "guardian", "emergContact"].forEach(function (property) {
+ //                var cell = document.createElement("td");
+ //                cell.textContent = employee[property];
+ //                row.appendChild(cell);
+ //            });
+ //            tableBody.appendChild(row);
+ //        });
+ //
+ //    }
+ //
+ //    /!*!/Save employee/!*!/
+ //
+ //    $(document).on("click", "#btnAddEmployee", function() {
+ //        console.log("Button clicked");
+ //        saveEmployee();
+ //    });
+ //
+ //    function saveEmployee(){
+ //        const employeeCode = document.getElementById('employeeCode').value;
+ //        const employeeName = document.getElementById('employeeName').value;
+ //        const proPic = document.getElementById('proPic').value;
+ //        const gender = document.getElementById('gender').value;
+ //        const status= document.getElementById('status').value;
+ //        const attachedBranch = document.getElementById('attachedBranch').value;
+ //        const designation = document.getElementById('designation').value;
+ //        const role = document.getElementById('role').value;
+ //        const dob = document.getElementById('dob').value;
+ //        const joinDate = document.getElementById('joinDate').value;
+ //        const addressLine01 = $("#addressLine01").val();
+ //        const addressLine02 = $("#addressLine02").val();
+ //        const addressLine03 = $("#addressLine03").val();
+ //        const contact = document.getElementById('contact').value;
+ //        const email = document.getElementById('email').value;
+ //        const guardian = document.getElementById('guardian').value;
+ //        const emergContact = document.getElementById('emergContact').value;
+ //
+ //        const employee = {
+ //                employeeCode:employeeCode,
+ //                employeeName:employeeName,
+ //                proPic:proPic,
+ //                gender:gender,
+ //                status:status,
+ //                attachedBranch:attachedBranch,
+ //                designation:designation,
+ //                role:role,
+ //                dob:dob,
+ //                joinDate:joinDate,
+ //                address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
+ //                contact:contact,
+ //                email:email,
+ //                guardian:guardian,
+ //                emergContact:emergContact
+ //    }
+ //
+ //        $.ajax({
+ //            url: 'http://localhost:8080/employee/save',
+ //            type: 'POST',
+ //            contentType: 'application/json',
+ //            data: JSON.stringify(employee),
+ //            success: function (response) {
+ //                console.log(response);
+ //                alert('Employees information saved successfully!');
+ //                getAllEmployees();
+ //            },
+ //            error: function (xhr, status, error) {
+ //                console.error(error);
+ //                alert('Failed to save employee information. Please try again.');
+ //            }
+ //        });
+ //    }
+ //
+ //    /!*!/table click/!*!/
+ //    $('#employeeTable').on('click', 'tr', function (){
+ //        var employeeCode = $(this).find('td:eq(0)').text();
+ //        var employeeName = $(this).find('td:eq(1)').text();
+ //        var proPic = $(this).find('td:eq(2)').text();
+ //        var gender = $(this).find('td:eq(3)').text();
+ //        var status = $(this).find('td:eq(4)').text();
+ //        var attachedBranch = $(this).find('td:eq(5)').text();
+ //        var designation = $(this).find('td:eq(6)').text();
+ //        var role = $(this).find('td:eq(7)').text();
+ //        var dob = $(this).find('td:eq(8)').text();
+ //        var joinDate = $(this).find('td:eq(9)').text();
+ //        var address = $(this).children().eq(10).text();
+ //
+ //        let addressComponents = address.split(', ');
+ //        let address01 = addressComponents[0] || '';
+ //        let address02 = addressComponents[1] || '';
+ //        let address03 = addressComponents[2] || '';
+ //
+ //        var contact = $(this).find('td:eq(11)').text();
+ //        var email = $(this).find('td:eq(12)').text();
+ //        var guardian = $(this).find('td:eq(13)').text();
+ //        var emergContact = $(this).find('td:eq(14)').text();
+ //
+ //        $("#employeeCode").val(employeeCode);
+ //        $("#employeeName").val(employeeName);
+ //        $("#proPic").val(proPic);
+ //        $("#gender").val(gender);
+ //        $("#status").val(status);
+ //        $("#attachedBranch").val(attachedBranch);
+ //        $("#designation").val(designation);
+ //        $("#role").val(role);
+ //        $("#dob").val(dob);
+ //        $("#joinDate").val(joinDate);
+ //        $("#addressLine01").val(address01);
+ //        $("#addressLine02").val(address02);
+ //        $("#addressLine03").val(address03);
+ //        $("#contact").val(contact);
+ //        $("#email").val(email);
+ //        $("#guardian").val(guardian);
+ //        $("#emergContact").val(emergContact);
+ //
+ //    })
+ //
+ //    $(document).on("click", "#btnUpdateEmployee", function() {
+ //        console.log("Button clicked");
+ //        updateEmployee();
+ //    });
+ //
+ //    function updateEmployee(){
+ //        const employeeCode = document.getElementById('employeeCode').value;
+ //        const employeeName = document.getElementById('employeeName').value;
+ //        const proPic = document.getElementById('proPic').value;
+ //        const gender = document.getElementById('gender').value;
+ //        const status= document.getElementById('status').value;
+ //        const attachedBranch = document.getElementById('attachedBranch').value;
+ //        const designation = document.getElementById('designation').value;
+ //        const role = document.getElementById('role').value;
+ //        const dob = document.getElementById('dob').value;
+ //        const joinDate = document.getElementById('joinDate').value;
+ //        const addressLine01 = document.getElementById('addressLine01').value;
+ //        const addressLine02 = document.getElementById('addressLine02').value;
+ //        const addressLine03 = document.getElementById('addressLine03').value;
+ //        const contact = document.getElementById('contact').value;
+ //        const email = document.getElementById('email').value;
+ //        const guardian = document.getElementById('guardian').value;
+ //        const emergContact = document.getElementById('emergContact').value;
+ //
+ //        const employee = {
+ //                employeeCode:employeeCode,
+ //                employeeName:employeeName,
+ //                proPic:proPic,
+ //                gender:gender,
+ //                status:status,
+ //                attachedBranch:attachedBranch,
+ //                designation:designation,
+ //                role:role,
+ //                dob:dob,
+ //                joinDate:joinDate,
+ //                address:`${addressLine01},${addressLine02},${addressLine03}`,
+ //                contact:contact,
+ //                email:email,
+ //                guardian:guardian,
+ //                emergContact:emergContact
+ //    }
+ //
+ //        $.ajax({
+ //            url: 'http://localhost:8080/employee/update',
+ //            type: 'POST',
+ //            contentType: 'application/json',
+ //            data: JSON.stringify(employee),
+ //            success: function (response) {
+ //                console.log(response);
+ //                alert('Employees information updated successfully!');
+ //                getAllEmployees();
+ //            },
+ //            error: function (xhr, status, error) {
+ //                console.error(error);
+ //                alert('Failed to save employee information. Please try again.');
+ //            }
+ //        });
+ //    }
+ //
+ //   /!* /table click/!*!/
+ //    $('#employeeTable').on('click', 'tr', function (){
+ //        var employeeCode = $(this).find('td:eq(0)').text();
+ //        var employeeName = $(this).find('td:eq(1)').text();
+ //        var proPic = $(this).find('td:eq(2)').text();
+ //        var gender = $(this).find('td:eq(3)').text();
+ //        var status = $(this).find('td:eq(4)').text();
+ //        var attachedBranch = $(this).find('td:eq(5)').text();
+ //        var designation = $(this).find('td:eq(6)').text();
+ //        var role = $(this).find('td:eq(7)').text();
+ //        var dob = $(this).find('td:eq(8)').text();
+ //        var joinDate = $(this).find('td:eq(9)').text();
+ //        var address = $(this).children().eq(10).text();
+ //
+ //        let addressComponents = address.split(', ');
+ //        let address01 = addressComponents[0] || '';
+ //        let address02 = addressComponents[1] || '';
+ //        let address03 = addressComponents[2] || '';
+ //
+ //        var contact = $(this).find('td:eq(11)').text();
+ //        var email = $(this).find('td:eq(12)').text();
+ //        var guardian = $(this).find('td:eq(13)').text();
+ //        var emergContact = $(this).find('td:eq(14)').text();
+ //
+ //        $("#employeeCode").val(employeeCode);
+ //        $("#employeeName").val(employeeName);
+ //        $("#proPic").val(proPic);
+ //        $("#gender").val(gender);
+ //        $("#status").val(status);
+ //        $("#attachedBranch").val(attachedBranch);
+ //        $("#designation").val(designation);
+ //        $("#role").val(role);
+ //        $("#dob").val(dob);
+ //        $("#joinDate").val(joinDate);
+ //        $("#addressLine01").val(address01);
+ //        $("#addressLine02").val(address02);
+ //        $("#addressLine03").val(address03);
+ //        $("#contact").val(contact);
+ //        $("#email").val(email);
+ //        $("#guardian").val(guardian);
+ //        $("#emergContact").val(emergContact);
+ //    })
+ //
+ //    $(document).ready(function () {
+ //        getAllEmployee();
+ //
+ //        $('#btnDeleteEmployee').on('click', function() {
+ //            var employeeCode = $('#employeeCode').val();
+ //            if (employeeCode !== "") {
+ //                deleteEmployee(employeeCode);
+ //            } else {
+ //                alert("Please select a employee to delete.");
+ //            }
+ //        });
+ //    });
+ //
+ //        $('#btnEmployeeDelete').on('click', function() {
+ //            var employeeCode = $('#employeeCode').val();
+ //            if (employeeCode !== "") {
+ //                deleteEmployee(employeeCode);
+ //            } else {
+ //                alert("Please select a employee to delete.");
+ //            }
+ //
+ //    });
+ //
+ //    function deleteEmployee(employeeCode) {
+ //        $.ajax({
+ //            url: `http://localhost:8080/employee/delete/${employeeCode}`, // Use backticks for template literal
+ //            type: 'DELETE',
+ //            success: function (response) {
+ //                console.log(response);
+ //                alert('Employee deleted successfully!');
+ //                getAllCustomers();
+ //            },
+ //            error: function (xhr, status, error) {
+ //                console.error(error);
+ //                alert('Failed to delete employee. Please try again.');
+ //            }
+ //        });
+ //    }
+ //
+ //    $(document).ready(function () {
+ //        getAllEmployees();
+ //    });
+ //
+ //    function employeeCapitalizeFirstLetter(str) {
+ //        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+ //    }*/
 </script>
 
 </body>

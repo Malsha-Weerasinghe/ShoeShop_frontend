@@ -128,8 +128,8 @@
   </div>
   <div class="form-container">
     <form id="customerForm">
-      <label for="customerCode">Customer ID</label>
-      <input type="text" id="customerCode" name="customerCode" required>
+      <label for="customerCode">Customer Id</label>
+      <input type="text" class="form-control" id="customerCode" placeholder="Customer Code">
 
       <label for="customerName">Customer Name</label>
       <input type="text" id="customerName" name="customerName" autocomplete="name" required>
@@ -153,7 +153,7 @@
       </select>
 
       <label for="totPoints">Total Points</label>
-      <input type="number" id="totPoints" name="totPoints" required>
+      <input type="text" id="totPoints" name="totPoints" required>
 
       <label for="dob">Date of Birth</label>
       <input type="date" id="dob" name="dob" required>
@@ -223,254 +223,6 @@
     window.history.back();
   }
 
-
-    /*let cusBaseUrl = "http://localhost:8080/";
-
-    // Load all customers and set purchaseDate to current date and time
-    loadAllCustomer();
-
-    function generateCustomerID() {
-      $("#customerCode").val("C00-001");
-      $.ajax({
-        url: cusBaseUrl + "customer/nextId",
-        method: "GET",
-        contentType: "application/json",
-        dataType: "json",
-        success: function (resp) {
-          let id = resp.value;
-          console.log("id" +id);
-
-          if (id === null){
-            $("#customerCode").val("C00-001" );
-          } else {
-            let tempId = parseInt(id.split("-")[1]);
-            tempId = tempId + 1;
-            if (tempId <= 9) {
-              $("#customerCode").val("C00-00" + tempId);
-            } else if (tempId <= 99) {
-              $("#customerCode").val("C00-0" + tempId);
-            } else {
-              $("#customerCode").val("C00-" + tempId);
-            }
-          }
-        },
-        error: function (ob, statusText, error) {
-
-        }
-      });
-    }
-
-    $("#btnAddCustomer").click(function () {
-      // Set purchaseDate field to current date and time
-      $('#purchaseDateTime').val(new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-      let formData = $("#customerForm").serializeArray();
-      $.ajax({
-        url: cusBaseUrl + "customer",
-        method: "POST",
-        data: formData,
-        dataType: "json",
-        success: function (res) {
-          saveUpdateAlert("Customer", res.message);
-          loadAllCustomer();
-        },
-        error: function (xhr, status, error) {
-          unSuccessUpdateAlert("Customer", JSON.parse(xhr.responseText).message);
-        }
-      });
-    });
-
-    function setTextFieldValuesC(customerCode, customerName, gender, joinDate, level, totPoint, dob, addressLine1, addressLine2, addressLine3, addressLine4, addressLine5, contact, email, purchaseDateTime) {
-      $("#customerCode").val(customerCode);
-      $("#customerName").val(customerName);
-      $("#gender").val(gender);
-      $("#joinDate").val(joinDate);
-      $("#level").val(level);
-      $("#totPoint").val(totPoint);
-      $("#dob").val(dob);
-      $("#addressLine1").val(addressLine1);
-      $("#addressLine2").val(addressLine2);
-      $("#addressLine3").val(addressLine3);
-      $("#addressLine4").val(addressLine4);
-      $("#addressLine5").val(addressLine5);
-      $("#contact").val(contact);
-      $("#email").val(email);
-      $("#purchaseDateTime").val(purchaseDateTime);
-
-      $("#customerCode").focus();
-      $("#btnAddCustomer").attr('disabled', false);
-      $("#btnUpdateCustomer").attr('disabled', false);
-      $("#btnDeleteCustomer").attr('disabled', false);
-    }
-
-    function loadAllCustomer() {
-      $("#customerTable").empty();
-      // Set purchaseDate field to current date and time
-      $('#purchaseDateTime').val(new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-      $.ajax({
-        url: cusBaseUrl + "customer",
-        method: "GET",
-        dataType: "json",
-        success: function (res) {
-          for (let i of res.data) {
-            let customerCode = i.customerCode;
-            let customerName = i.customerName;
-            let gender = i.gender;
-            let joinDate = i.joinDate;
-            let level = i.level;
-            let totPoints = i.totPoints;
-            let dob = i.dob;
-            let addressLine1 = i.addressLine1 ;
-            let addressLine2 = i.addressLine2 ;
-            let addressLine3 = i.addressLine3 ;
-            let addressLine4 = i.addressLine4 ;
-            let addressLine5 = i.addressLine5 ;
-            let contact = i.contact;
-            let email = i.email;
-            let purchaseDateTime = i.purchaseDateTime;
-
-            let row = <tr><td>${customerCode}</td><td>${customerName}</td><td>${gender}</td><td>${joinDate}</td><td>${level}</td><td>${totPoints}</td><td>${dob}</td><td>${addressLine1}</td><td>${addressLine2}</td><td>${addressLine3}</td><td>${addressLine4}</td><td>${addressLine5}</td><td>${contact}</td><td>${email}</td><td>${purchaseDateTime}</td></tr>;
-            $("#customerTable").append(row);
-          }
-          blindClickEventsC();
-          generateCustomerID();
-          setTextFieldValuesC("", "", "", "", "", "", "", "", "","","","","", "","");
-          console.log(res.message);
-        },
-        error: function (error) {
-          let message = JSON.parse(error.responseText).message;
-          console.log(message);
-        }
-      });
-    }
-
-
-    function blindClickEventsC() {
-      $("#customerTable").on("click", "tr", function () {
-        let customerCode = $(this).children().eq(0).text();
-        let customerName = $(this).children().eq(1).text();
-        let gender = $(this).children().eq(2).text();
-        let joinDate = $(this).children().eq(3).text();
-        let level = $(this).children().eq(4).text();
-        let totPoints = $(this).children().eq(5).text();
-        let dob = $(this).children().eq(6).text();
-        let addressLine1 = $(this).children().eq(7).text();
-        let addressLine2 = $(this).children().eq(8).text();
-        let addressLine3 = $(this).children().eq(9).text();
-        let addressLine4 = $(this).children().eq(10).text();
-        let addressLine5 = $(this).children().eq(11).text();
-        let contact = $(this).children().eq(12).text();
-        let email = $(this).children().eq(13).text();
-        let purchaseDateTime = $(this).children().eq(14).text();
-
-        // Set values to respective input fields
-        $("#customerCode").val(customerCode);
-        $("#customerName").val(customerName);
-        $("#gender").val(gender);
-        $("#joinDate").val(joinDate);
-        $("#level").val(level);
-        $("#totPoints").val(totPoints);
-        $("#dob").val(dob);
-        $("#addressLine1").val(addressLine1);
-        $("#addressLine2").val(addressLine2);
-        $("#addressLine3").val(addressLine3);
-        $("#addressLine4").val(addressLine4);
-        $("#addressLine5").val(addressLine5);
-        $("#contact").val(contact);
-        $("#email").val(email);
-        $("#purchaseDateTime").val(purchaseDateTime);
-
-        // Enable buttons
-        $("#btnAddCustomer").attr('disabled', false);
-        $("#btnUpdateCustomer").attr('disabled', false);
-        $("#btnDeleteCustomer").attr('disabled', false);
-      });
-    }
-
-    $("#btnUpdateCustomer").click(function () {
-      let formData = $("#customerForm").serialize();
-
-      $.ajax({
-        url: cusBaseUrl + "customer",
-        method: "PUT",
-        data: formData,
-        dataType: "json",
-        success: function (res) {
-          saveUpdateAlert("Customer updated", res.message);
-          loadAllCustomer();
-        },
-        error: function (xhr, status, error) {
-          unSuccessUpdateAlert("Customer update failed", JSON.parse(xhr.responseText).message);
-        }
-      });
-    });
-
-    $("#btnDeleteCustomer").click(function () {
-      let id = $("#customerCode").val();
-      $.ajax({
-        url: cusBaseUrl + "customer?customerCode=" + id,
-        method: "DELETE",
-        dataType: "json",
-        success: function (resp) {
-          saveUpdateAlert("Customer", resp.message);
-          loadAllCustomer();
-        },
-        error: function (xhr, status, error) {
-          let message = JSON.parse(xhr.responseText).message;
-          unSuccessUpdateAlert("Customer", message);
-        }
-      });
-    });
-
-    $("#search_CId").on("keypress", function (event) {
-      if (event.which === 13) {
-        var search = $("#search_CId").val();
-        $("#customerTable").empty();
-        $.ajax({
-          url: cusBaseUrl + "customer/search",
-          method: "GET",
-          contentType: "application/json",
-          dataType: "json",
-          data: { code: search }, // Send the search parameter as an object
-          success: function (res) {
-            console.log(res);
-            if (res) {
-              let customerCode = res.customerCode;
-              let customerName = res.customerName;
-              let gender = res.gender;
-              let joinDate = res.joinDate;
-              let level = res.level;
-              let totPoints = res.totPoints;
-              let dob = res.dob;
-              let addressLine1 = res.addressLine1 ;
-              let addressLine2 = res.addressLine2 ;
-              let addressLine3 = res.addressLine3 ;
-              let addressLine4 = res.addressLine4 ;
-              let addressLine5 = res.addressLine5 ;
-              let contact = res.contact;
-              let email = res.email;
-              let purchaseDateTime = res.purchaseDateTime;
-
-              let row = "<tr><td>" + customerCode + "</td><td>" + customerName + "</td><td>" + gender + "</td><td>" + joinDate + "</td><td>" + level + "</td><td>" + totPoints + "</td><td>" + dob + "</td><td>" + addressLine1 + "</td><td>" + addressLine2 + "</td><td>" + addressLine3 + "</td><td>" + addressLine4 + "</td><td>" + addressLine5 + "</td><td>" + contact + "</td><td>" + email + "</td><td>" + purchaseDateTime + "</td></tr>";
-              $("#customerTable").append(row);
-              blindClickEventsC();
-            } else {
-              // No data found
-              console.log("No data found");
-              // Handle this case if required
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error("Error:", error);
-            loadAllCustomer(); // Load all customers as fallback
-            let message = xhr.responseJSON ? xhr.responseJSON.message : "An error occurred";
-            emptyMassage(message);
-          }
-        });
-      }
-    });*/
-
   getAllCustomers();
   /*/loadNextCustomerId();/*/
 
@@ -484,6 +236,7 @@
         console.log(response);
         console.log(response.length);
         loadCustomerDataInTable(response);
+        generateCustomerID();
       },
       error: function (xhr, status, err) {
         console.log(err)
@@ -529,20 +282,6 @@
     loadCustomerData();
   };
 
-  //!*next id!/
-  function loadNextCustomerId(){
-    $.ajax({
-      url:"http://localhost:8080/customer/nextId",
-      method:"GET",
-      success:function (response) {
-        console.log(response)
-        $("#cId").val(response);
-      },
-      error:function (xhr, status, error) {
-        console.log(error)
-      }
-    })
-  }
 
   $("#btnAddCustomer").click(function (){
     saveCustomer();
@@ -556,7 +295,7 @@
     const gender = $("#gender").val();
     const joinDate = $("#joinDate").val();
     const level = $("#level").val();
-    const totPoints = parseInt($("#totPoints").val()); // Ensure totPoints is treated as an integer
+    const totPoints = $("#totPoints").val(); // Ensure totPoints is treated as an integer
     const dob = $("#dob").val();
     const addressLine1 = $("#addressLine1").val();
     const addressLine2 = $("#addressLine2").val();
@@ -575,7 +314,7 @@
       gender: gender,
       joinDate: joinDate,
       level: level,
-      totalPoints: totPoints, // Ensure the field name matches the backend expectation
+      totPoints: totPoints, // Ensure the field name matches the backend expectation
       dob: dob,
       address: `${addressLine1}, ${addressLine2}, ${addressLine3}`,
       contact: contact,
@@ -692,7 +431,7 @@
     $("#purchaseDateTime").val(purchaseDateTime);
   })
 
-/*  function blindClickEventsC() {
+  function blindClickEventsC() {
     $("#customerTable").on("click", "tr", function () {
       let code = $(this).children().eq(0).text();
       let name = $(this).children().eq(1).text();
@@ -733,12 +472,12 @@
       $("#btnUpdateCustomer").attr('disabled', false);
       $("#btnDeleteCustomer").attr('disabled', false);
     });
-  }*/
+  }
 
 
-  /*$("#cClearBtn").click(function (){
+  $("#cClearBtn").click(function (){
       clearCustomerInputFields();
-  })*/
+  })
 
   $(document).ready(function () {
     getAllCustomers();
@@ -822,6 +561,43 @@
         }
       });
     }
+  });
+
+
+  function generateCustomerID() {
+    $("#customerCode").val("C00-001");
+    $.ajax({
+      url: "http://localhost:8080/customer/CustomerIdGenerate",
+      method: "GET",
+      contentType: "application/json",
+      dataType: "json",
+      success: function (resp) {
+        let id = resp.value;
+        console.log("id" +id);
+
+        if (id === null){
+          $("#customerCode").val("C00-001" );
+        } else {
+          let tempId = parseInt(id.split("-")[1]);
+          tempId = tempId + 1;
+          if (tempId <= 9) {
+            $("#customerCode").val("C00-00" + tempId);
+          } else if (tempId <= 99) {
+            $("#customerCode").val("C00-0" + tempId);
+          } else {
+            $("#customerCode").val("C00-" + tempId);
+          }
+        }
+      },
+      error: function (ob, statusText, error) {
+
+      }
+    });
+  }
+
+
+  $(document).ready(function () {
+    getAllCustomers();
   });
 
 </script>
