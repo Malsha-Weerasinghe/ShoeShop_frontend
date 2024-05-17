@@ -64,7 +64,10 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-right: 60px;
+      background-color: white;
+      margin-left: -100px;
     }
     table, th, td {
       border: 1px solid #ccc;
@@ -72,10 +75,14 @@
     th, td {
       padding: 10px;
       text-align: left;
+      border: 1px solid #dddddd;
     }
     th {
       background-color: #DAA520;
       color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
     .backBtn {
       position: fixed; /* Set position to fixed */
@@ -121,23 +128,20 @@
     </div>
   </div>
   <form id="itemForm">
-    <label for="itemCode">Item Code</label>
-    <input type="text" id="itemCode" name="itemCode" required>
+    <label for="item_code">Item Code</label>
+    <input type="text" id="item_code" name="item_code" required>
 
-    <label for="itemDesc">Item Description</label>
-    <input type="text" id="itemDesc" name="itemDesc" required>
+    <label for="itemDescription">Item Description</label>
+    <input type="text" id="itemDescription" name="itemDescription" required>
 
-    <label for="quantity">Quantity</label>
-    <input type="number" id="quantity" name="quantity" required>
-
-    <label for="itemPicture">Item Picture (Base64)</label>
-    <input type="text" id="itemPicture" name="itemPicture">
+    <label for="itemPic">Item Picture (Base64)</label>
+    <input type="file" id="itemPic" name="itemPic">
 
     <label for="category">Category</label>
     <input type="text" id="category" name="category">
 
     <label for="size">Size</label>
-    <input type="number" id="size" name="size">
+    <input type="text" id="size" name="size">
 
     <label for="supplierCode">Supplier Code</label>
     <input type="text" id="supplierCode" name="supplierCode">
@@ -146,23 +150,31 @@
     <input type="text" id="supplierName" name="supplierName">
 
     <label for="unitPriceSale">Unit Price (Sale)</label>
-    <input type="number" id="unitPriceSale" name="unitPriceSale" step="0.01">
+    <input type="text" id="unitPriceSale" name="unitPriceSale" step="0.01">
 
     <label for="unitPriceBuy">Unit Price (Buy)</label>
-    <input type="number" id="unitPriceBuy" name="unitPriceBuy" step="0.01">
+    <input type="text" id="unitPriceBuy" name="unitPriceBuy" step="0.01">
+
+    <label for="qty">Quantity</label>
+    <input type="text" id="qty" name="qty" required>
 
     <label for="expectedProfit">Expected Profit</label>
-    <input type="number" id="expectedProfit" name="expectedProfit" step="0.01">
+    <input type="text" id="expectedProfit" name="expectedProfit" step="0.01">
 
     <label for="profitMargin">Profit Margin (%)</label>
-    <input type="number" id="profitMargin" name="profitMargin" step="0.01">
+    <input type="text" id="profitMargin" name="profitMargin" step="0.01">
 
     <label for="status">Status</label>
-    <input type="text" id="status" name="status">
+    <select id="status" name="status">
+      <option value="Select">Select</option>
+      <option value="LOW">LOW</option>
+      <option value="AVAILABLE">AVAILABLE</option>
+      <option value="NOT_AVAILABLE">NOT_AVAILABLE</option>
+    </select>
 
-    <button type="button" class="btn btn-success">Save</button>
-    <button type="button" class="btn btn-danger">Delete</button>
-    <button type="button" class="btn btn-warning">Update</button>
+    <button type="button" class="btn btn-success" id="btnAddItem">Save</button>
+    <button type="button" class="btn btn-danger" id="btnDeleteItem">Delete</button>
+    <button type="button" class="btn btn-warning" id="btnUpdateItem">Update</button>
   </form>
 
   <h2>Item Information Table</h2>
@@ -171,7 +183,6 @@
     <tr>
       <th>Item Code</th>
       <th>Item Description</th>
-      <th>Quantity</th>
       <th>Item Picture</th>
       <th>Category</th>
       <th>Size</th>
@@ -179,12 +190,13 @@
       <th>Supplier Name</th>
       <th>Unit Price (Sale)</th>
       <th>Unit Price (Buy)</th>
+      <th>Quantity</th>
       <th>Expected Profit</th>
       <th>Profit Margin (%)</th>
       <th>Status</th>
     </tr>
     </thead>
-    <tbody id="itemTableBody">
+    <tbody id="inventoryTable">
     <!-- Item data will be populated here -->
     </tbody>
   </table>
@@ -192,10 +204,363 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../assets/bootstrap/js/jquery-3.7.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   function goBack() {
     window.history.back();
   }
+
+  getAllItems();
+
+  /*get all*/
+  function getAllItems() {
+    $.ajax({
+      url: "http://localhost:8080/inventory/getAllItems",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        console.log(response.length);
+        loadItemDataInTable(response);
+        generateItemID();
+      },
+      error: function (xhr, status, err) {
+        console.log(err)
+      }
+    })
+  }
+
+  function loadItemDataInTable(items) {
+    var tableBody = document.getElementById("inventoryTable");
+    tableBody.innerHTML = "";
+
+    items.forEach(function(item) {
+      var row = document.createElement("tr");
+
+      ["item_code", "itemDescription", "itemPic","category", "size", "supplierCode", "supplierName", "unitPriceSale",
+        "unitPriceBuy", "qty", "expectedProfit","profitMargin","status"].forEach(function(property) {
+        var cell = document.createElement("td");
+        cell.textContent = item[property];
+        row.appendChild(cell);
+      });
+      tableBody.appendChild(row);
+    });
+  }
+  $("#btnAddItem").click(function (){
+    saveItem();
+  })
+
+  /*save*/
+  function saveItem(){
+    const item_code = document.getElementById('item_code').value;
+    const itemDescription = document.getElementById('itemDescription').value;
+    const itemPic = document.getElementById('itemPic').value;
+    const category = document.getElementById('category').value;
+    const size= document.getElementById('size').value;
+    const supplierCode = document.getElementById('supplierCode').value;
+    const supplierName = document.getElementById('supplierName').value;
+    const unitPriceSale = document.getElementById('unitPriceSale').value;
+    const unitPriceBuy = document.getElementById('unitPriceBuy').value;
+    const qty = document.getElementById('qty').value;
+    const expectedProfit = document.getElementById('expectedProfit').value;
+    const profitMargin = document.getElementById('profitMargin').value;
+    const status = document.getElementById('status').value;
+
+
+    const item = {
+      item_code:item_code,
+      itemDescription:itemDescription,
+      itemPic:itemPic,
+      category:category,
+      size:size,
+      supplierCode:supplierCode,
+      supplierName:supplierName,
+      unitPriceSale:unitPriceSale,
+      unitPriceBuy:unitPriceBuy,
+      qty:qty,
+      expectedProfit:expectedProfit,
+      profitMargin:profitMargin,
+      status:status,
+    }
+
+    $.ajax({
+      url: 'http://localhost:8080/inventory/save',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(item),
+      success: function (response) {
+        console.log(response);
+        /*document.getElementById('customerForm').reset();*/
+        alert('Item information saved successfully!');
+        getAllItems();
+
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        alert('Failed to save item information. Please try again.');
+      }
+    });
+  }
+
+  $("#btnUpdateItem").click(function (){
+    updateItem();
+  })
+
+  /*save*/
+  function updateItem(){
+    const item_code = document.getElementById('item_code').value;
+    const itemDescription = document.getElementById('itemDescription').value;
+    const itemPic = document.getElementById('itemPic').value;
+    const category = document.getElementById('category').value;
+    const size= document.getElementById('size').value;
+    const supplierCode = document.getElementById('supplierCode').value;
+    const supplierName = document.getElementById('supplierName').value;
+    const unitPriceSale = document.getElementById('unitPriceSale').value;
+    const unitPriceBuy = document.getElementById('unitPriceBuy').value;
+    const qty = document.getElementById('qty').value;
+    const expectedProfit = document.getElementById('expectedProfit').value;
+    const profitMargin = document.getElementById('profitMargin').value;
+    const status = document.getElementById('status').value;
+
+
+    const item = {
+      item_code:item_code,
+      itemDescription:itemDescription,
+      itemPic:itemPic,
+      category:category,
+      size:size,
+      supplierCode:supplierCode,
+      supplierName:supplierName,
+      unitPriceSale:unitPriceSale,
+      unitPriceBuy:unitPriceBuy,
+      qty:qty,
+      expectedProfit:expectedProfit,
+      profitMargin:profitMargin,
+      status:status,
+    }
+
+    $.ajax({
+      url: 'http://localhost:8080/inventory/update',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(item),
+      success: function (response) {
+        console.log(response);
+        alert('Item information Updated successfully!');
+        getAllItems();
+
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        alert('Failed to update item information. Please try again.');
+      }
+    });
+  }
+
+  /*/!*table click*!/
+  $('#inventoryTable').on('click', 'tr', function (){
+    var item_code = $(this).find('td:eq(0)').text();
+    var itemDescription = $(this).find('td:eq(1)').text();
+    var itemPic = $(this).find('td:eq(2)').text();
+    var category = $(this).find('td:eq(3)').text();
+    var size = $(this).find('td:eq(4)').text();
+    var supplierCode = $(this).find('td:eq(5)').text();
+    var supplierName = $(this).find('td:eq(6)').text();
+    var unitPriceSale = $(this).find('td:eq(7)').text();
+    var unitPriceBuy = $(this).find('td:eq(8)').text();
+    var qty = $(this).find('td:eq(9)').text();
+    var expectedProfit = $(this).find('td:eq(10)').text();
+    var profitMargin = $(this).find('td:eq(11)').text();
+    var status = $(this).find('td:eq(12)').text();
+
+    $("#item_code").val(item_code);
+    $("#itemDescription").val(itemDescription);
+    $("#itemPic").val(itemPic);
+    $("#category").val(category);
+    $("#size").val(size);
+    $("#supplierCode").val(supplierCode);
+    $("#supplierName").val(supplierName);
+    $("#unitPrice").val(unitPriceSale);
+    $("#unitPriceBuy").val(unitPriceBuy);
+    $("#qty").val(qty);
+    $("#expectedProfit").val(expectedProfit);
+    $("#profitMargin").val(profitMargin);
+    $("#status").val(status);
+
+  })
+*/
+  $(document).ready(function() {
+    $('#inventoryTable').on('click', 'tr', function() {
+      var item_code = $(this).find('td:eq(0)').text();
+      var itemDescription = $(this).find('td:eq(1)').text();
+      var itemPic = $(this).find('td:eq(2)').text(); // No need to fetch itemPic from table
+      var category = $(this).find('td:eq(3)').text();
+      var size = $(this).find('td:eq(4)').text();
+      var supplierCode = $(this).find('td:eq(5)').text();
+      var supplierName = $(this).find('td:eq(6)').text();
+      var unitPriceSale = $(this).find('td:eq(7)').text();
+      var unitPriceBuy = $(this).find('td:eq(8)').text();
+      var qty = $(this).find('td:eq(9)').text();
+      var expectedProfit = $(this).find('td:eq(10)').text();
+      var profitMargin = $(this).find('td:eq(11)').text();
+      var status = $(this).find('td:eq(12)').text();
+
+      console.log("item_code:", item_code);
+      console.log("itemDescription:", itemDescription);
+      console.log("itemPic:", itemPic); // No need to log itemPic
+      console.log("category:", category);
+      console.log("size:", size);
+      console.log("supplierCode:", supplierCode);
+      console.log("supplierName:", supplierName);
+      console.log("unitPriceSale:", unitPriceSale);
+      console.log("unitPriceBuy:", unitPriceBuy);
+      console.log("qty:", qty);
+      console.log("expectedProfit:", expectedProfit);
+      console.log("profitMargin:", profitMargin);
+      console.log("status:", status);
+
+      // Set values to input fields
+      $("#item_code").val(item_code);
+      $("#itemDescription").val(itemDescription);
+      $("#category").val(category);
+      $("#size").val(size);
+      $("#supplierCode").val(supplierCode);
+      $("#supplierName").val(supplierName);
+      $("#unitPrice").val(unitPriceSale);
+      $("#unitPriceBuy").val(unitPriceBuy);
+      $("#qty").val(qty);
+      $("#expectedProfit").val(expectedProfit);
+      $("#profitMargin").val(profitMargin);
+      $("#status").val(status);
+    });
+  });
+
+
+
+  $(document).ready(function () {
+    getAllItems();
+
+    $('#btnDeleteItem').on('click', function() {
+      var item_code = $('#item_code').val();
+      if (item_code !== "") {
+        deleteItem(item_code);
+      } else {
+        alert("Please select a customer to delete.");
+      }
+    });
+  });
+
+  /*delete customer*/
+  function deleteItem(item_code) {
+    $.ajax({
+      url: `http://localhost:8080/inventory/delete/${item_code}`,
+      type: 'DELETE',
+      success: function (response) {
+        console.log(response);
+        alert('Item deleted successfully!');
+        getAllItems();
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        alert('Failed to delete Item. Please try again.');
+      }
+    });
+  }
+
+
+ /* $("#btnItemSearch").on("click", function () {
+    var search = $("#searchInput").val();
+    $("#inventoryTable").empty();
+
+    $.ajax({
+      url: 'http://localhost:8080/app/api/v1/inventories/search?id' +id,
+      method: "GET",
+      data: { id: search },
+      contentType: "application/json",
+      dataType: "json",
+      success: function (res) {
+        console.log(res);
+        if (res && res.length > 0) {
+          // Assuming res is an array of objects
+          let firstItem = res[0]; // Assuming you only want details of the first item
+
+          let row = "<tr><td>" + firstItem.itemCode + "</td><td>" + firstItem.itemDesc + "</td><td>" + firstItem.itemPicture + "</td><td>" + firstItem.category + "</td><td>" + firstItem.size + "</td><td>" + firstItem.quantity +
+                  "</td><td>" + firstItem.supplierCode + "</td><td>" + firstItem.supplierName + "</td><td>" + firstItem.unitPriceSale + "</td><td>" + firstItem.unitPriceBuy + "</td><td>" + firstItem.expectProfit + "</td>" +
+                  "<td>" + firstItem.profitMargin + "</td><td>" + firstItem.status + "</td></tr>";
+
+          // Insert the row before any existing rows
+          $("#inventoryTable").append(row);
+
+          // If you want to display other items as well, you can loop through the remaining items and append them to the table
+          for (let i = 1; i < res.length; i++) {
+            let currentItem = res[i];
+            let itemRow = "<tr><td>" + currentItem.itemCode + "</td><td>" + currentItem.itemDesc + "</td><td>" + currentItem.itemPicture + "</td><td>" + currentItem.category + "</td><td>" + currentItem.size + "</td><td>" + currentItem.quantity +
+                    "</td><td>" + currentItem.supplierCode + "</td><td>" + currentItem.supplierName + "</td><td>" + currentItem.unitPriceSale + "</td><td>" + currentItem.unitPriceBuy + "</td><td>" + currentItem.expectProfit + "</td>" +
+                    "<td>" + currentItem.profitMargin + "</td><td>" + currentItem.status + "</td></tr>";
+
+            $("#inventoryTable").append(itemRow);
+          }
+        } else {
+          console.log("No data found");
+          alert("No Data Found")
+          // Display a message to the user
+          $("#inventoryTable").append("<tr><td colspan='13'>No data found</td></tr>");
+        }
+      },
+      error: function (error) {
+        console.error(error);
+        alert('Failed to search for items. Please try again.');
+      }
+    });
+  });
+
+  $(document).ready(function () {
+    getAllItems();
+  });*/
+
+
+  function generateItemID() {
+    $("#item_code").val("I00-001");
+    $.ajax({
+      url: "http://localhost:8080/inventory/InventoryIdGenerate",
+      method: "GET",
+      contentType: "application/json",
+      dataType: "json",
+      success: function (resp) {
+        let id = resp.value;
+        console.log("id" +id);
+
+        if (id === null){
+          $("#item_code").val("I00-001" );
+        } else {
+          let tempId = parseInt(id.split("-")[1]);
+          tempId = tempId + 1;
+          if (tempId <= 9) {
+            $("#item_code").val("I00-00" + tempId);
+          } else if (tempId <= 99) {
+            $("#item_code").val("I00-0" + tempId);
+          } else {
+            $("#item_code").val("I00-" + tempId);
+          }
+        }
+      },
+      error: function (ob, statusText, error) {
+
+      }
+    });
+  }
+
+  $(document).ready(function () {
+    getAllItems();
+  });
+
+  function customerCapitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+
 </script>
 </body>
 </html>

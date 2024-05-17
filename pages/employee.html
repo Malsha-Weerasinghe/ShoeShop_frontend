@@ -148,20 +148,18 @@
 
         <label for="gender">Gender</label>
         <select id="gender" name="gender">
+            <option value="Select">Select</option>
             <option value="MALE">Male</option>
             <option value="FEMALE">Female</option>
             <option value="OTHER">Other</option>
         </select>
 
         <label for="status">Status</label>
-        <select id="status" name="status">
-            <option value="LOW">LOW</option>
-            <option value="AVAILABLE">AVAILABLE</option>
-            <option value="NOT_AVAILABLE">NOT_AVAILABLE</option>
-        </select>
+        <input type="status" id="status" name="status">
 
         <label for="designation">Designation</label>
         <select id="designation" name="designation">
+            <option value="Select">Select</option>
             <option value="MANAGER">MANAGER</option>
             <option value="SUPERVISOR">SUPERVISOR</option>
             <option value="CASHIER">CASHIER</option>
@@ -169,6 +167,7 @@
 
         <label for="role">Access Role</label>
         <select id="role" name="role">
+            <option value="Select">Select</option>
             <option value="ADMIN">ADMIN</option>
             <option value="USER">USER</option>
         </select>
@@ -408,7 +407,7 @@
         var selectedRow;
 
         // Handle table row click
-        $('#employeeTable').on('click', 'tr', function (){
+        $('#employeeTable').on('click', 'tr', function() {
             selectedRow = $(this);
 
             var employeeCode = selectedRow.find('td:eq(0)').text();
@@ -433,9 +432,26 @@
             var guardian = selectedRow.find('td:eq(13)').text();
             var emergContact = selectedRow.find('td:eq(14)').text();
 
+            console.log("Setting values from selected row:");
+            console.log("employeeCode:", employeeCode);
+            console.log("employeeName:", employeeName);
+            console.log("proPic:", proPic); // Debug: Log proPic value
+            console.log("gender:", gender);
+            console.log("status:", status);
+            console.log("attachedBranch:", attachedBranch);
+            console.log("designation:", designation);
+            console.log("role:", role);
+            console.log("dob:", dob);
+            console.log("joinDate:", joinDate);
+            console.log("address:", address);
+            console.log("contact:", contact);
+            console.log("email:", email);
+            console.log("guardian:", guardian);
+            console.log("emergContact:", emergContact);
+
             $("#employeeCode").val(employeeCode);
             $("#employeeName").val(employeeName);
-            $("#proPicBase64").val(proPic); // Changed ID to avoid conflict with file input
+            $("#proPicBase64").val(proPic); // Ensure this ID matches your HTML
             $("#gender").val(gender);
             $("#status").val(status);
             $("#attachedBranch").val(attachedBranch);
@@ -459,6 +475,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const base64String = e.target.result;
+                    console.log("File read as base64:", base64String); // Debug: Log base64 string
                     if (selectedRow) {
                         selectedRow.find('td:eq(2)').text(base64String);
                         $("#proPicBase64").val(base64String);

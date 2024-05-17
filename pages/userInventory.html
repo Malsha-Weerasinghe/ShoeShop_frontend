@@ -63,7 +63,10 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-right: 60px;
+      background-color: white;
+      margin-left: -100px;
     }
     table, th, td {
       border: 1px solid #ccc;
@@ -71,10 +74,14 @@
     th, td {
       padding: 10px;
       text-align: left;
+      border: 1px solid #dddddd;
     }
     th {
       background-color: #DAA520;
       color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
     .backBtn {
       position: fixed; /* Set position to fixed */
@@ -160,7 +167,6 @@
     <tr>
       <th>Item Code</th>
       <th>Item Description</th>
-      <th>Quantity</th>
       <th>Item Picture</th>
       <th>Category</th>
       <th>Size</th>
@@ -168,12 +174,13 @@
       <th>Supplier Name</th>
       <th>Unit Price (Sale)</th>
       <th>Unit Price (Buy)</th>
+      <th>Quantity</th>
       <th>Expected Profit</th>
       <th>Profit Margin (%)</th>
       <th>Status</th>
     </tr>
     </thead>
-    <tbody id="itemTableBody">
+    <tbody id="itemTable">
     <!-- Item data will be populated here -->
     </tbody>
   </table>
@@ -181,10 +188,58 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../assets/bootstrap/js/jquery-3.7.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   function goBack() {
     window.history.back();
   }
+
+  getAllItems();
+
+  /*get all*/
+  function getAllItems() {
+    $.ajax({
+      url: "http://localhost:8080/inventory/getAllItems",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        console.log(response.length);
+        loadItemDataInTable(response);
+      },
+      error: function (xhr, status, err) {
+        console.log(err)
+      }
+    })
+  }
+
+  function loadItemDataInTable(items) {
+    var tableBody = document.getElementById("itemTable");
+    tableBody.innerHTML = "";
+
+    items.forEach(function(item) {
+      var row = document.createElement("tr");
+
+      ["item_code", "itemDescription", "itemPic","category", "size", "supplierCode", "supplierName", "unitPriceSale",
+        "unitPriceBuy", "qty", "expectedProfit","profitMargin","status"].forEach(function(property) {
+        var cell = document.createElement("td");
+        cell.textContent = item[property];
+        row.appendChild(cell);
+      });
+      tableBody.appendChild(row);
+    });
+  }
+
+  window.onload = function() {
+    loadItemDataInTable();
+  };
+
+  $(document).ready(function () {
+    getAllItems();
+  });
+
 </script>
 </body>
 </html>

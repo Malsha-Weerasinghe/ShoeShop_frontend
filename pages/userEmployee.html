@@ -268,65 +268,6 @@
   };
 
 
-  /*Save employee*/
-
-  $("#btnAddEmployee").click(function (){
-    saveEmployee();
-  })
-  function saveEmployee(){
-    const employeeCode = document.getElementById('employeeCode').value;
-    const employeeName = document.getElementById('employeeName').value;
-    const proPic = document.getElementById('proPic').value;
-    const gender = document.getElementById('gender').value;
-    const status= document.getElementById('status').value;
-    const attachedBranch = document.getElementById('attachedBranch').value;
-    const designation = document.getElementById('designation').value;
-    const role = document.getElementById('role').value;
-    const dob = document.getElementById('dob').value;
-    const joinDate = document.getElementById('joinDate').value;
-    const addressLine01 = $("#addressLine01").val();
-    const addressLine02 = $("#addressLine02").val();
-    const addressLine03 = $("#addressLine03").val();
-    const contact = document.getElementById('contact').value;
-    const email = document.getElementById('email').value;
-    const guardian = document.getElementById('guardian').value;
-    const emergContact = document.getElementById('emergContact').value;
-
-    const employee = {
-      employeeCode:employeeCode,
-      employeeName:employeeName,
-      proPic:proPic,
-      gender:gender,
-      status:status,
-      attachedBranch:attachedBranch,
-      designation:designation,
-      role:role,
-      dob:dob,
-      joinDate:joinDate,
-      address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
-      contact:contact,
-      email:email,
-      guardian:guardian,
-      emergContact:emergContact
-    }
-
-    $.ajax({
-      url: 'http://localhost:8080/employee/save',
-      type: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(employee),
-      success: function (response) {
-        console.log(response);
-        alert('Employees information saved successfully!');
-        getAllEmployees();
-      },
-      error: function (xhr, status, error) {
-        console.error(error);
-        alert('Failed to save employee information. Please try again.');
-      }
-    });
-  }
-
   $(document).ready(function () {
     getAllEmployees();
   });
