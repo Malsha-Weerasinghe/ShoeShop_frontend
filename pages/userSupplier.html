@@ -63,7 +63,10 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-right: 60px;
+      background-color: white;
+      margin-left: -200px;
     }
     table, th, td {
       border: 1px solid #ccc;
@@ -71,10 +74,14 @@
     th, td {
       padding: 10px;
       text-align: left;
+      border: 1px solid #dddddd;
     }
     th {
       background-color: #DAA520;
       color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
     .backBtn {
       position: fixed; /* Set position to fixed */
@@ -162,18 +169,13 @@
       <th>Supplier Code</th>
       <th>Supplier Name</th>
       <th>Category</th>
-      <th>Address Line 01</th>
-      <th>Address Line 02</th>
-      <th>Address Line 03</th>
-      <th>Address Line 04</th>
-      <th>Address Line 05</th>
-      <th>Address Line 06</th>
+      <th>Address</th>
       <th>Contact No.1</th>
       <th>Contact No.2</th>
       <th>Email</th>
     </tr>
     </thead>
-    <tbody id="supplierTableBody">
+    <tbody id="supplierTable">
     <!-- Supplier data will be populated here -->
     </tbody>
   </table>
@@ -181,10 +183,86 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
   function goBack() {
     window.history.back();
   }
+  getAllSuppliers();
+
+  function getAllSuppliers(){
+    $.ajax({
+      url: "http://localhost:8080/supplier/getAllSuppliers",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        console.log(response.length);
+        console.log("success to load suppliers");
+        loadSupplierDataInTable(response);
+        generateSupplierId();
+      },
+      error: function (xhr, status, err) {
+        console.log("Fail to load suppliers");
+        console.log(err);
+      }
+    });
+  }
+
+  function loadSupplierDataInTable(suppliers) {
+    var tableBody = document.getElementById("supplierTable");
+    tableBody.innerHTML = "";
+
+    suppliers.forEach(function (supplier) {
+      var row = document.createElement("tr");
+
+      ["supplierCode", "supplierName", "category", "address", "contactNo1", "contactNo2", "email"].forEach(function (property) {
+        var cell = document.createElement("td");
+        cell.textContent = supplier[property];
+        row.appendChild(cell);
+      });
+      tableBody.appendChild(row);
+    });
+  }
+
+  function loadSupplierData(suppliers) {
+    var tableBody = document.getElementById("supplierTable");
+    tableBody.innerHTML = "";
+
+    suppliers.forEach(function(supplier) {
+      var row = document.createElement("tr");
+
+      ["supplierCode", "supplierName", "category", "address", "contactNo1", "contactNo2", "email"].forEach(function(property) {
+        var cell = document.createElement("td");
+        cell.textContent = supplier[property];
+        row.appendChild(cell);
+      });
+
+      tableBody.appendChild(row);
+    });
+  }
+
+  window.onload = function() {
+    /*   getAllSuppliers();*/
+    loadSupplierData();
+  };
+
+  function loadNextSupplierId(){
+    $.ajax({
+      url:"http://localhost:8080/supplier/nextId",
+      method:"GET",
+      success:function (response) {
+        console.log(response)
+        $("#cId").val(response);
+      },
+      error:function (xhr, status, error) {
+        console.log(error)
+      }
+    })
+  }
+
+
 </script>
 </body>
 </html>

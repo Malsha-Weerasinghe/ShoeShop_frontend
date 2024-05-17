@@ -36,7 +36,9 @@
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
-      border-left:0px;
+      padding-right: 60px;
+      background-color: white;
+      margin-left: -392px;
     }
     table, th, td {
       border: 1px solid #ccc;
@@ -44,10 +46,14 @@
     th, td {
       padding: 10px;
       text-align: left;
+      border: 1px solid #dddddd;
     }
     th {
       background-color: #DAA520;
       color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
     form {
       background-color: #fff;
@@ -186,6 +192,7 @@
     <tr>
       <th>Employee Code</th>
       <th>Employee Name</th>
+      <th>Profile Picture</th>
       <th>Gender</th>
       <th>Status</th>
       <th>Designation</th>
@@ -193,18 +200,14 @@
       <th>Date of Birth</th>
       <th>Date of Join</th>
       <th>Attached Branch</th>
-      <th>Address Line 01</th>
-      <th>Address Line 02</th>
-      <th>Address Line 03</th>
-      <th>Address Line 04</th>
-      <th>Address Line 05</th>
+      <th>Address</th>
       <th>Contact No.</th>
       <th>Email</th>
       <th>Emergency Contact Person</th>
       <th>Emergency Contact</th>
     </tr>
     </thead>
-    <tbody id="employeeTableBody">
+    <tbody id="employeeTable">
     <!-- Employee data will be populated here -->
     </tbody>
   </table>
@@ -212,10 +215,121 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../assets/bootstrap/js/jquery-3.7.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   function goBack() {
     window.history.back();
   }
+
+  getAllEmployees();
+
+  /*getAll Employees*/
+  function getAllEmployees(){
+    $.ajax({
+      url: "http://localhost:8080/employee/getAllEmployees",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        console.log(response.length);
+        console.log("success to load employees")
+        loadEmployeeDataInTable(response);
+      },
+      error: function (xhr, status, err) {
+        console.log("Fail to load employees")
+        console.log(err)
+      }
+    })
+  }
+
+  /*load employee into table*/
+  function loadEmployeeDataInTable(employees) {
+    var tableBody = document.getElementById("employeeTable");
+    tableBody.innerHTML = "";
+
+    employees.forEach(function (employee) {
+      var row = document.createElement("tr");
+
+      ["employeeCode", "employeeName", "proPic", "gender", "status", "attachedBranch", "designation", "role",
+        "dob", "joinDate", "address", "contact", "email", "guardian", "emergContact"].forEach(function (property) {
+        var cell = document.createElement("td");
+        cell.textContent = employee[property];
+        row.appendChild(cell);
+      });
+      tableBody.appendChild(row);
+    });
+
+  }
+
+  window.onload = function() {
+    loadEmployeeDataInTable();
+  };
+
+
+  /*Save employee*/
+
+  $("#btnAddEmployee").click(function (){
+    saveEmployee();
+  })
+  function saveEmployee(){
+    const employeeCode = document.getElementById('employeeCode').value;
+    const employeeName = document.getElementById('employeeName').value;
+    const proPic = document.getElementById('proPic').value;
+    const gender = document.getElementById('gender').value;
+    const status= document.getElementById('status').value;
+    const attachedBranch = document.getElementById('attachedBranch').value;
+    const designation = document.getElementById('designation').value;
+    const role = document.getElementById('role').value;
+    const dob = document.getElementById('dob').value;
+    const joinDate = document.getElementById('joinDate').value;
+    const addressLine01 = $("#addressLine01").val();
+    const addressLine02 = $("#addressLine02").val();
+    const addressLine03 = $("#addressLine03").val();
+    const contact = document.getElementById('contact').value;
+    const email = document.getElementById('email').value;
+    const guardian = document.getElementById('guardian').value;
+    const emergContact = document.getElementById('emergContact').value;
+
+    const employee = {
+      employeeCode:employeeCode,
+      employeeName:employeeName,
+      proPic:proPic,
+      gender:gender,
+      status:status,
+      attachedBranch:attachedBranch,
+      designation:designation,
+      role:role,
+      dob:dob,
+      joinDate:joinDate,
+      address: `${addressLine01}, ${addressLine02}, ${addressLine03}`,
+      contact:contact,
+      email:email,
+      guardian:guardian,
+      emergContact:emergContact
+    }
+
+    $.ajax({
+      url: 'http://localhost:8080/employee/save',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(employee),
+      success: function (response) {
+        console.log(response);
+        alert('Employees information saved successfully!');
+        getAllEmployees();
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        alert('Failed to save employee information. Please try again.');
+      }
+    });
+  }
+
+  $(document).ready(function () {
+    getAllEmployees();
+  });
 </script>
 
 </body>

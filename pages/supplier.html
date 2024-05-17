@@ -67,6 +67,7 @@
             margin-bottom: 20px;
             padding-right: 60px;
             background-color: white;
+            margin-left: -200px;
         }
         table, th, td {
             border: 1px solid #ccc;
@@ -203,6 +204,7 @@
                 console.log(response.length);
                 console.log("success to load suppliers");
                 loadSupplierDataInTable(response);
+                generateSupplierId();
             },
             error: function (xhr, status, err) {
                 console.log("Fail to load suppliers");
@@ -378,8 +380,83 @@
         $("#contactNo2").val(contactNo2);
         $("#email").val(email);
     })
+    window.onload = function() {
+        loadSupplierData();
+    };
+
+    $(document).ready(function () {
+        getAllSuppliers();
+
+        $('#btnDeleteSupplier').on('click', function() {
+            var supplierCode = $('#supplierCode').val();
+            if (supplierCode !== "") {
+                deleteSupplier(supplierCode);
+            } else {
+                alert("Please select a supplier to delete.");
+            }
+        });
+    });
+
+    function deleteSupplier(supplierCode) {
+        $.ajax({
+            url: `http://localhost:8080/supplier/delete/${supplierCode}`, // Use backticks for template literal
+            type: 'DELETE',
+            success: function (response) {
+                console.log(response);
+                alert('Supplier deleted successfully!');
+                /* clearCustomerInputFields(); */
+                getAllSuppliers();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert('Failed to delete supplier. Please try again.');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        getAllSuppliers();
+    });
+
+    function generateSupplierId() {
+        $("#supplierCode").val("S00-001");
+        $.ajax({
+            url: "http://localhost:8080/supplier/SupplierIdGenerate",
+            method: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (resp) {
+                let id = resp.value;
+                console.log("id" +id);
+
+                if (id === null){
+                    $("#supplierCode").val("S00-001" );
+                } else {
+                    let tempId = parseInt(id.split("-")[1]);
+                    tempId = tempId + 1;
+                    if (tempId <= 9) {
+                        $("#supplierCode").val("S00-00" + tempId);
+                    } else if (tempId <= 99) {
+                        $("#supplierCode").val("S00-0" + tempId);
+                    } else {
+                        $("#supplierCode").val("S00-" + tempId);
+                    }
+                }
+            },
+            error: function (ob, statusText, error) {
+
+            }
+        });
+    }
 
 
+    $(document).ready(function () {
+        getAllSuppliers();
+    });
+
+    function customerCapitalizeFirstLetter(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
 
 </script>
 </body>
