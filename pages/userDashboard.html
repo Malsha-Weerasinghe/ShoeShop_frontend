@@ -7,8 +7,135 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../styles/dashboard.css">
-    <link rel="stylesheet" href="../styles/home.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("../assets/images/interior-design-for-shoe-shop.jpg");
+            background-size: cover;
+            overflow: hidden;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Make sure the body has a positioning context */
+        }
+
+        /* Add a semi-transparent overlay */
+        html::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Adjust the alpha value (0-1) for desired opacity */
+            z-index: -1; /* Ensure the overlay is behind the content */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .picture-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            cursor: pointer;
+        }
+
+        /* .picture {
+             width: 150px; !* Set width *!
+             height: 150px; !* Set height *!
+             border: 2px solid #ccc; !* Add border *!
+             border-radius: 10px;
+             overflow: hidden;
+         }*/
+
+        .picture {
+            position: relative;
+            width: 150px;
+            height: auto;
+            border: 2px solid #090808;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease; /* Add transition effect */
+        }
+
+        .picture:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+
+        .picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .image-text {
+            position: absolute;
+            bottom: 0; /* Position text at the bottom */
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Background color for text */
+            color: white; /* Text color */
+            padding: 5px; /* Add padding to the text */
+            box-sizing: border-box; /* Include padding in element's total width/height */
+            font-size: 14px; /* Adjust font size */
+        }
+
+        .backBtn {
+            position: fixed; /* Set position to fixed */
+            top: 20px; /* Adjust top position */
+            left: 20px; /* Adjust left position */
+            width: 50px;
+            height: auto;
+            border: 2px solid #090808;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease; /* Add transition effect */
+        }
+
+        .backBtn:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+
+        .backBtn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .logo {
+            position: fixed; /* Set position to fixed */
+            left: 20px; /* Adjust left position */
+            width: 50px;
+            height: auto;
+            border: 2px solid #090808;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease; /* Add transition effect */
+        }
+
+        .logo:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+    </style>
 
 
 </head>
@@ -70,10 +197,7 @@
                         <img src="../assets/images/inventory.png" alt="Image 6">
                         <div class="image-text">Inventory</div>
                     </div>
-                    <div class="picture" onclick="navigateTo('userAdmin.html')">
-                        <img src="../assets/images/admin.png" alt="Image 7">
-                        <div class="image-text">Admin Panel</div>
-                    </div>
+
                 </div>
             </div>
         </div>
