@@ -61,7 +61,7 @@
     button:hover {
       background-color: #093b11;
     }
-    table {
+  /*  table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
@@ -84,6 +84,65 @@
     tr:nth-child(even) {
       background-color: #f2f2f2;
     }
+    */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      padding-right: 60px;
+      background-color: white;
+      table-layout: fixed; /* Ensures the columns have a fixed width */
+      margin-left: -200px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #dddddd;
+      word-wrap: break-word; /* Allows text to wrap within the cell */
+    }
+
+    th {
+      background-color: #DAA520;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Set a fixed width for each column */
+    th, td {
+      width: 100px; /* 100% / 13 columns = 7.69% per column */
+    }
+
+    th:nth-child(3), td:nth-child(3) {
+      width: 100px; /* Set a specific width for the Item Picture column */
+      overflow: hidden;
+      white-space: nowrap; /* Prevents text from wrapping */
+      text-overflow: ellipsis; /* Displays ellipsis (...) for overflow text */
+      position: relative; /* Needed for the tooltip */
+    }
+
+    /* Tooltip styling */
+    td:nth-child(3):hover::after {
+      content: attr(data-fulltext); /* Display the full text from a data attribute */
+      position: absolute;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 5px;
+      white-space: normal; /* Allows the text to wrap */
+      z-index: 10;
+      max-width: 300px; /* Max width of the tooltip */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      top: 100%;
+      left: 0;
+    }
+
     .backBtn {
       position: fixed; /* Set position to fixed */
       top: 20px; /* Adjust top position */
@@ -127,16 +186,21 @@
       </div>
     </div>
   </div>
-  <form id="itemForm">
+  <form id="itemForm" >
     <label for="item_code">Item Code</label>
     <input type="text" id="item_code" name="item_code" required>
 
     <label for="itemDescription">Item Description</label>
     <input type="text" id="itemDescription" name="itemDescription" required>
 
-    <label for="itemPic">Item Picture (Base64)</label>
-    <input type="file" id="itemPic" name="itemPic">
+    <!--<label for="itemPic">Item Picture (Base64)</label>
+    <input type="file" id="itemPic" name="itemPic">-->
 
+    <label for="itemPic">Item Picture (Base64)</label>
+    <input type="file" id="itemPic" name="itemPic" accept="image/*">
+    <img id="itemPicDisplay" src="" alt="Selected Image" style="max-width: 200px; max-height: 200px;">
+
+    </br>
     <label for="category">Category</label>
     <input type="text" id="category" name="category">
 
@@ -175,6 +239,7 @@
     <button type="button" class="btn btn-success" id="btnAddItem">Save</button>
     <button type="button" class="btn btn-danger" id="btnDeleteItem">Delete</button>
     <button type="button" class="btn btn-warning" id="btnUpdateItem">Update</button>
+    <button type="button" class="btn btn-success" id="clearButton">Clear All</button>
   </form>
 
   <h2>Item Information Table</h2>
@@ -253,12 +318,27 @@
   })
 
   /*save*/
-  function saveItem(){
+  document.getElementById('itemPic').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const base64String = e.target.result.split(',')[1]; // Get base64 string without metadata
+      document.getElementById('itemPicDisplay').src = e.target.result; // Display the image
+      document.getElementById('itemPic').setAttribute('data-base64', base64String); // Store base64 string in a data attribute
+    };
+
+    if (file) {
+      reader.readAsDataURL(file); // Convert the image file to base64
+    }
+  });
+
+  function saveItem() {
     const item_code = document.getElementById('item_code').value;
     const itemDescription = document.getElementById('itemDescription').value;
-    const itemPic = document.getElementById('itemPic').value;
+    const itemPicBase64 = document.getElementById('itemPic').getAttribute('data-base64'); // Get base64 string from data attribute
     const category = document.getElementById('category').value;
-    const size= document.getElementById('size').value;
+    const size = document.getElementById('size').value;
     const supplierCode = document.getElementById('supplierCode').value;
     const supplierName = document.getElementById('supplierName').value;
     const unitPriceSale = document.getElementById('unitPriceSale').value;
@@ -268,53 +348,67 @@
     const profitMargin = document.getElementById('profitMargin').value;
     const status = document.getElementById('status').value;
 
-
     const item = {
-      item_code:item_code,
-      itemDescription:itemDescription,
-      itemPic:itemPic,
-      category:category,
-      size:size,
-      supplierCode:supplierCode,
-      supplierName:supplierName,
-      unitPriceSale:unitPriceSale,
-      unitPriceBuy:unitPriceBuy,
-      qty:qty,
-      expectedProfit:expectedProfit,
-      profitMargin:profitMargin,
-      status:status,
-    }
+      item_code: item_code,
+      itemDescription: itemDescription,
+      itemPic: itemPicBase64, // Use the base64 string here
+      category: category,
+      size: size,
+      supplierCode: supplierCode,
+      supplierName: supplierName,
+      unitPriceSale: unitPriceSale,
+      unitPriceBuy: unitPriceBuy,
+      qty: qty,
+      expectedProfit: expectedProfit,
+      profitMargin: profitMargin,
+      status: status
+    };
 
     $.ajax({
       url: 'http://localhost:8080/inventory/save',
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(item),
-      success: function (response) {
+      success: function(response) {
         console.log(response);
-        /*document.getElementById('customerForm').reset();*/
         alert('Item information saved successfully!');
         getAllItems();
-
       },
-      error: function (xhr, status, error) {
+      error: function(xhr, status, error) {
         console.error(error);
         alert('Failed to save item information. Please try again.');
       }
     });
   }
 
+
+
   $("#btnUpdateItem").click(function (){
     updateItem();
   })
 
   /*save*/
-  function updateItem(){
+  document.getElementById('itemPic').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const base64String = e.target.result.split(',')[1]; // Get base64 string without metadata
+      document.getElementById('itemPicDisplay').src = e.target.result; // Display the image
+      document.getElementById('itemPic').setAttribute('data-base64', base64String); // Store base64 string in a data attribute
+    };
+
+    if (file) {
+      reader.readAsDataURL(file); // Convert the image file to base64
+    }
+  });
+
+  function updateItem() {
     const item_code = document.getElementById('item_code').value;
     const itemDescription = document.getElementById('itemDescription').value;
-    const itemPic = document.getElementById('itemPic').value;
+    const itemPicBase64 = document.getElementById('itemPic').getAttribute('data-base64'); // Get base64 string from data attribute
     const category = document.getElementById('category').value;
-    const size= document.getElementById('size').value;
+    const size = document.getElementById('size').value;
     const supplierCode = document.getElementById('supplierCode').value;
     const supplierName = document.getElementById('supplierName').value;
     const unitPriceSale = document.getElementById('unitPriceSale').value;
@@ -324,22 +418,21 @@
     const profitMargin = document.getElementById('profitMargin').value;
     const status = document.getElementById('status').value;
 
-
     const item = {
-      item_code:item_code,
-      itemDescription:itemDescription,
-      itemPic:itemPic,
-      category:category,
-      size:size,
-      supplierCode:supplierCode,
-      supplierName:supplierName,
-      unitPriceSale:unitPriceSale,
-      unitPriceBuy:unitPriceBuy,
-      qty:qty,
-      expectedProfit:expectedProfit,
-      profitMargin:profitMargin,
-      status:status,
-    }
+      item_code: item_code,
+      itemDescription: itemDescription,
+      itemPic: itemPicBase64, // Use the base64 string here
+      category: category,
+      size: size,
+      supplierCode: supplierCode,
+      supplierName: supplierName,
+      unitPriceSale: unitPriceSale,
+      unitPriceBuy: unitPriceBuy,
+      qty: qty,
+      expectedProfit: expectedProfit,
+      profitMargin: profitMargin,
+      status: status
+    };
 
     $.ajax({
       url: 'http://localhost:8080/inventory/update',
@@ -359,43 +452,11 @@
     });
   }
 
-  /*/!*table click*!/
-  $('#inventoryTable').on('click', 'tr', function (){
-    var item_code = $(this).find('td:eq(0)').text();
-    var itemDescription = $(this).find('td:eq(1)').text();
-    var itemPic = $(this).find('td:eq(2)').text();
-    var category = $(this).find('td:eq(3)').text();
-    var size = $(this).find('td:eq(4)').text();
-    var supplierCode = $(this).find('td:eq(5)').text();
-    var supplierName = $(this).find('td:eq(6)').text();
-    var unitPriceSale = $(this).find('td:eq(7)').text();
-    var unitPriceBuy = $(this).find('td:eq(8)').text();
-    var qty = $(this).find('td:eq(9)').text();
-    var expectedProfit = $(this).find('td:eq(10)').text();
-    var profitMargin = $(this).find('td:eq(11)').text();
-    var status = $(this).find('td:eq(12)').text();
-
-    $("#item_code").val(item_code);
-    $("#itemDescription").val(itemDescription);
-    $("#itemPic").val(itemPic);
-    $("#category").val(category);
-    $("#size").val(size);
-    $("#supplierCode").val(supplierCode);
-    $("#supplierName").val(supplierName);
-    $("#unitPrice").val(unitPriceSale);
-    $("#unitPriceBuy").val(unitPriceBuy);
-    $("#qty").val(qty);
-    $("#expectedProfit").val(expectedProfit);
-    $("#profitMargin").val(profitMargin);
-    $("#status").val(status);
-
-  })
-*/
   $(document).ready(function() {
     $('#inventoryTable').on('click', 'tr', function() {
       var item_code = $(this).find('td:eq(0)').text();
       var itemDescription = $(this).find('td:eq(1)').text();
-      var itemPic = $(this).find('td:eq(2)').text(); // No need to fetch itemPic from table
+      var itemPicData = $(this).find('td:eq(2)').text(); // Assuming this is the Base64 encoded image data
       var category = $(this).find('td:eq(3)').text();
       var size = $(this).find('td:eq(4)').text();
       var supplierCode = $(this).find('td:eq(5)').text();
@@ -407,20 +468,6 @@
       var profitMargin = $(this).find('td:eq(11)').text();
       var status = $(this).find('td:eq(12)').text();
 
-      console.log("item_code:", item_code);
-      console.log("itemDescription:", itemDescription);
-      console.log("itemPic:", itemPic); // No need to log itemPic
-      console.log("category:", category);
-      console.log("size:", size);
-      console.log("supplierCode:", supplierCode);
-      console.log("supplierName:", supplierName);
-      console.log("unitPriceSale:", unitPriceSale);
-      console.log("unitPriceBuy:", unitPriceBuy);
-      console.log("qty:", qty);
-      console.log("expectedProfit:", expectedProfit);
-      console.log("profitMargin:", profitMargin);
-      console.log("status:", status);
-
       // Set values to input fields
       $("#item_code").val(item_code);
       $("#itemDescription").val(itemDescription);
@@ -428,16 +475,31 @@
       $("#size").val(size);
       $("#supplierCode").val(supplierCode);
       $("#supplierName").val(supplierName);
-      $("#unitPrice").val(unitPriceSale);
+      $("#unitPriceSale").val(unitPriceSale);
       $("#unitPriceBuy").val(unitPriceBuy);
       $("#qty").val(qty);
       $("#expectedProfit").val(expectedProfit);
       $("#profitMargin").val(profitMargin);
       $("#status").val(status);
+
+      // Display the image
+      if (itemPicData) {
+        // Decode Base64 and set as source
+        $("#itemPicDisplay").attr("src", "data:image/jpeg;base64," + itemPicData);
+      } else {
+        $("#itemPicDisplay").attr("src", ""); // Clear image source
+      }
+    });
+
+    // Handle file input change to display the selected image
+    $('#itemPic').on('change', function(event) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#itemPicDisplay').attr('src', e.target.result);
+      }
+      reader.readAsDataURL(event.target.files[0]);
     });
   });
-
-
 
   $(document).ready(function () {
     getAllItems();
@@ -470,55 +532,55 @@
   }
 
 
- /* $("#btnItemSearch").on("click", function () {
-    var search = $("#searchInput").val();
-    $("#inventoryTable").empty();
+  /* $("#btnItemSearch").on("click", function () {
+     var search = $("#searchInput").val();
+     $("#inventoryTable").empty();
 
-    $.ajax({
-      url: 'http://localhost:8080/app/api/v1/inventories/search?id' +id,
-      method: "GET",
-      data: { id: search },
-      contentType: "application/json",
-      dataType: "json",
-      success: function (res) {
-        console.log(res);
-        if (res && res.length > 0) {
-          // Assuming res is an array of objects
-          let firstItem = res[0]; // Assuming you only want details of the first item
+     $.ajax({
+       url: 'http://localhost:8080/app/api/v1/inventories/search?id' +id,
+       method: "GET",
+       data: { id: search },
+       contentType: "application/json",
+       dataType: "json",
+       success: function (res) {
+         console.log(res);
+         if (res && res.length > 0) {
+           // Assuming res is an array of objects
+           let firstItem = res[0]; // Assuming you only want details of the first item
 
-          let row = "<tr><td>" + firstItem.itemCode + "</td><td>" + firstItem.itemDesc + "</td><td>" + firstItem.itemPicture + "</td><td>" + firstItem.category + "</td><td>" + firstItem.size + "</td><td>" + firstItem.quantity +
-                  "</td><td>" + firstItem.supplierCode + "</td><td>" + firstItem.supplierName + "</td><td>" + firstItem.unitPriceSale + "</td><td>" + firstItem.unitPriceBuy + "</td><td>" + firstItem.expectProfit + "</td>" +
-                  "<td>" + firstItem.profitMargin + "</td><td>" + firstItem.status + "</td></tr>";
+           let row = "<tr><td>" + firstItem.itemCode + "</td><td>" + firstItem.itemDesc + "</td><td>" + firstItem.itemPicture + "</td><td>" + firstItem.category + "</td><td>" + firstItem.size + "</td><td>" + firstItem.quantity +
+                   "</td><td>" + firstItem.supplierCode + "</td><td>" + firstItem.supplierName + "</td><td>" + firstItem.unitPriceSale + "</td><td>" + firstItem.unitPriceBuy + "</td><td>" + firstItem.expectProfit + "</td>" +
+                   "<td>" + firstItem.profitMargin + "</td><td>" + firstItem.status + "</td></tr>";
 
-          // Insert the row before any existing rows
-          $("#inventoryTable").append(row);
+           // Insert the row before any existing rows
+           $("#inventoryTable").append(row);
 
-          // If you want to display other items as well, you can loop through the remaining items and append them to the table
-          for (let i = 1; i < res.length; i++) {
-            let currentItem = res[i];
-            let itemRow = "<tr><td>" + currentItem.itemCode + "</td><td>" + currentItem.itemDesc + "</td><td>" + currentItem.itemPicture + "</td><td>" + currentItem.category + "</td><td>" + currentItem.size + "</td><td>" + currentItem.quantity +
-                    "</td><td>" + currentItem.supplierCode + "</td><td>" + currentItem.supplierName + "</td><td>" + currentItem.unitPriceSale + "</td><td>" + currentItem.unitPriceBuy + "</td><td>" + currentItem.expectProfit + "</td>" +
-                    "<td>" + currentItem.profitMargin + "</td><td>" + currentItem.status + "</td></tr>";
+           // If you want to display other items as well, you can loop through the remaining items and append them to the table
+           for (let i = 1; i < res.length; i++) {
+             let currentItem = res[i];
+             let itemRow = "<tr><td>" + currentItem.itemCode + "</td><td>" + currentItem.itemDesc + "</td><td>" + currentItem.itemPicture + "</td><td>" + currentItem.category + "</td><td>" + currentItem.size + "</td><td>" + currentItem.quantity +
+                     "</td><td>" + currentItem.supplierCode + "</td><td>" + currentItem.supplierName + "</td><td>" + currentItem.unitPriceSale + "</td><td>" + currentItem.unitPriceBuy + "</td><td>" + currentItem.expectProfit + "</td>" +
+                     "<td>" + currentItem.profitMargin + "</td><td>" + currentItem.status + "</td></tr>";
 
-            $("#inventoryTable").append(itemRow);
-          }
-        } else {
-          console.log("No data found");
-          alert("No Data Found")
-          // Display a message to the user
-          $("#inventoryTable").append("<tr><td colspan='13'>No data found</td></tr>");
-        }
-      },
-      error: function (error) {
-        console.error(error);
-        alert('Failed to search for items. Please try again.');
-      }
-    });
-  });
+             $("#inventoryTable").append(itemRow);
+           }
+         } else {
+           console.log("No data found");
+           alert("No Data Found")
+           // Display a message to the user
+           $("#inventoryTable").append("<tr><td colspan='13'>No data found</td></tr>");
+         }
+       },
+       error: function (error) {
+         console.error(error);
+         alert('Failed to search for items. Please try again.');
+       }
+     });
+   });
 
-  $(document).ready(function () {
-    getAllItems();
-  });*/
+   $(document).ready(function () {
+     getAllItems();
+   });*/
 
 
   function generateItemID() {
@@ -560,6 +622,26 @@
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 
+  function clearInputs() {
+    document.getElementById("item_code").value = "";
+    document.getElementById("itemDescription").value = "";
+    document.getElementById("itemPic").value = "";
+    document.getElementById("itemPicDisplay").src = "";
+    document.getElementById("category").value = "";
+    document.getElementById("size").value = "";
+    document.getElementById("supplierCode").value = "";
+    document.getElementById("supplierName").value = "";
+    document.getElementById("unitPriceSale").value = "";
+    document.getElementById("unitPriceBuy").value = "";
+    document.getElementById("qty").value = "";
+    document.getElementById("expectedProfit").value = "";
+    document.getElementById("profitMargin").value = "";
+    document.getElementById("status").value = "Select";
+    generateItemID();
+  }
+
+  // Event listener for the clear button
+  document.getElementById("clearButton").addEventListener("click", clearInputs);
 
 </script>
 </body>
