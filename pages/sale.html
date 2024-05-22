@@ -4,16 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icon Font Stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Template Stylesheet -->
+  <link href="../css/style.css" rel="stylesheet">
+  <!--    <link href="../css/sale.css" rel="stylesheet">-->
   <title>Sale Service</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-image: url("../assets/images/stockists-mobile.webp");
-      background-size: cover;
+      /*  background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      padding: 20px;
+      padding: 20px;*/
     }
+/*    }
     body::before {
       content: "";
       position: fixed;
@@ -21,8 +42,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.2); /* Adjust the alpha value (0-1) for desired opacity */
-      z-index: -1; /* Ensure the overlay is behind the content */
+      background-color: rgba(0, 0, 0, 0.2); !* Adjust the alpha value (0-1) for desired opacity *!
+      z-index: -1; !* Ensure the overlay is behind the content *!
     }
     .container {
       max-width: 600px;
@@ -50,7 +71,7 @@
       box-sizing: border-box;
     }
     button {
-      /*width: 100%;*/
+      !*width: 100%;*!
       padding: 10px;
       background-color: #0eba33;
       color: #fff;
@@ -76,7 +97,7 @@
     th {
       background-color: #DAA520;
       color: #fff;
-    }
+    }*/
     .backBtn {
       position: fixed; /* Set position to fixed */
       top: 20px; /* Adjust top position */
@@ -120,78 +141,167 @@
       </div>
     </div>
   </div>
-  <form id="itemForm">
-    <label for="itemCode">Item Code</label>
-    <input type="text" id="itemCode" name="itemCode" required>
+  <div class="content">
 
-    <label for="orderNo">Order No.</label>
-    <input type="text" id="orderNo" name="orderNo" required>
+    <div id="layoutSidenav_content">
+      <main>
 
-    <label for="customerName">Customer Name</label>
-    <input type="text" id="customerName" name="customerName">
+        <div class="container-fluid px-4">
+          <h1 class="mt-4">Sales Information</h1>
 
-    <label for="itemDesc">Item Description</label>
-    <input type="text" id="itemDesc" name="itemDesc" required>
+          <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+              Sales Detail
+            </div>
 
-    <label for="size">Size</label>
-    <input type="number" id="size" name="size" required>
+            <form class="row g-3 p-3 ">
+              <div class="col-md-4">
+                <label for="inputState" class="form-label">Item Code</label>
+                <select  class="form-select">
+                  <option selected>Select Code</option>
+                  <option></option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="validationDefault01" class="form-label">Order No</label>
+                <input type="text" class="form-control" id="validationDefault01" placeholder="Enter Order No" required>
+              </div>
+              <div class="col-md-4">
+                <label for="inputState" class="form-label">Customer Name</label>
+                <select  class="form-select">
+                  <option selected>Select Customer</option>
+                  <option></option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="inputState" class="form-label">Item DESC</label>
+                <select  class="form-select">
+                  <option selected>Select DESC</option>
+                  <option></option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="validationDefault02" class="form-label">Size</label>
+                <input type="text" class="form-control"  placeholder="Enter Size" required>
+              </div>
+              <div class="col-md-4">
+                <label for="validationDefault02" class="form-label">Unit Price</label>
+                <input type="text" class="form-control" id="validationDefault02" placeholder="Enter Unit Price" required>
+              </div>
+              <div class="col-md-4">
+                <label for="inputState" class="form-label">Item QTY</label>
+                <select id="inputState" class="form-select">
+                  <option selected>Select QTY</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="inputEmail4" class="form-label">Total Price</label>
+                <input type="text" class="form-control" placeholder="Enter Total Price">
+              </div>
+              <div class="col-md-4">
+                <label for="inputEmail4" class="form-label">Purchase date</label>
+                <input type="date" class="form-control" id="inputEmail4">
+              </div>
+              <div class="col-md-4">
+                <label for="inputState" class="form-label">Payment method</label>
+                <select id="#" class="form-select">
+                  <option disabled selected>Payment method</option>
+                  <option>Cash</option>
+                  <option>Credit Card</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="inputPassword4" class="form-label">Add points</label>
+                <input type="number" class="form-control" id="inputPassword4" placeholder="Enter Points">
+              </div>
+              <div class="col-md-4">
+                <label for="inputCity" class="form-label">Cashier Name</label>
+                <input type="text" class="form-control" id="inputCity" placeholder="Enter Cashier Name">
+              </div>
 
-    <label for="unitPrice">Unit Price</label>
-    <input type="number" id="unitPrice" name="unitPrice" required>
+              <div class="d-grid gap-2 d-md-flex my-5">
+                <button id="btnSave" class="btn btn-outline-primary me-md-2" type="submit">Save</button>
+                <button id="btnUpdate" class="btn btn-outline-warning" type="button">Update</button>
+                <button id="btnRemove" class="btn btn-outline-danger" type="button">Delete</button>
+                <button id="btnGetAll" class="btn btn-outline-success" type="button">Get All</button>
+              </div>
+            </form>
 
-    <label for="itemQty">Item Quantity</label>
-    <input type="number" id="itemQty" name="itemQty" required>
+          </div>
+        </div>
 
-    <label for="totalPrice">Total Price</label>
-    <input type="number" id="totalPrice" name="totalPrice" required>
-
-    <label for="purchaseDate">Purchase Date</label>
-    <input type="datetime-local" id="purchaseDate" name="purchaseDate" required>
-
-    <label for="paymentMethod">Payment Method</label>
-    <select id="paymentMethod" name="paymentMethod" required>
-      <option value="">Select Payment Method</option>
-      <option value="Cash">Cash</option>
-      <option value="Card">Card</option>
-    </select>
-
-    <label for="addedPoints">Added Points</label>
-    <input type="number" id="addedPoints" name="addedPoints">
-
-    <label for="cashierName">Cashier Name</label>
-    <input type="text" id="cashierName" name="cashierName" required>
-
-    <button type="button" class="btn btn-success">Save</button>
-    <button type="button" class="btn btn-danger">Delete</button>
-    <button type="button" class="btn btn-warning">Update</button>
-  </form>
-
-  <h2>sales Information Table</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>Item Code</th>
-      <th>Order No.</th>
-      <th>Customer Name</th>
-      <th>Item Description</th>
-      <th>Size</th>
-      <th>Unit Price</th>
-      <th>Item Quantity</th>
-      <th>Total Price</th>
-      <th>Purchase Date</th>
-      <th>Payment Method</th>
-      <th>Added Points</th>
-      <th>Cashier Name</th>
-    </tr>
-    </thead>
-    <tbody id="itemTableBody">
-    <!-- Item data will be populated here -->
-    </tbody>
-  </table>
+        <div class="container-fluid px-4 md-5">
+          <div class="card mt-4 shadow-sm">
+            <div class="card-header">
+              <h4 class="mb-0">Sales Table
+              </h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                  <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Order No</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Item DESC</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">QTY</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Purchase date</th>
+                    <th scope="col">Payment method</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Cashier name</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>C001</td>
+                    <td>D001</td>
+                    <td>Lakshan</td>
+                    <td>19</td>
+                    <td>09</td>
+                    <td>1800.00</td>
+                    <td>2</td>
+                    <td>3600.00</td>
+                    <td>04/24</td>
+                    <td>Cash</td>
+                    <td>03</td>
+                    <td>Rashmika</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+          <div class="d-flex align-items-center justify-content-between small">
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
 </div>
+
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../lib/chart/chart.min.js"></script>
+<script src="../lib/easing/easing.min.js"></script>
+<script src="../lib/waypoints/waypoints.min.js"></script>
+<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="../lib/tempusdominus/js/moment.min.js"></script>
+<script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
 <script>
   function goBack() {
     window.history.back();
