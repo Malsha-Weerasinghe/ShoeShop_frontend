@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+        }
+        body {
+            font-family: Poppins;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("../img/shoeShop.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        html::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.79); /* Adjust the alpha value (0-1) for desired opacity */
+            z-index: -1; /* Ensure the overlay is behind the content */
+        }
+        .login-container {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 35px;
+            background-color: rgba(0, 0, 0, 0.5); /* Reduced opacity */
+        }
+        .login-container:hover{
+            border: 3px solid #00d8ff;
+            background-color: rgba(1, 35, 42, 0.8);
+        }
+        .login-btn {
+            font-size: 15px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            outline: none;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            background-color: #194298;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        .signUp-btn {
+            font-size: 15px;
+            margin-top: 15px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            outline: none;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            color: white;
+            background-color: #730909;
+            transition: transform 0.3s ease;
+        }
+        .login-btn:hover,.signUp-btn:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+        h2 {
+            font-family: 'Poppins SemiBold', sans-serif;
+            color: white;
+            font-size: 23px;
+        }
+        h6 {
+            color: white;
+            text-align: center;
+        }
+        label {
+            color: white;
+        }
+        .modal-body{
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: rgba(19, 18, 18, 0.5);
+        }
+        .backBtn {
+            position: fixed;
+            top: 20px;
+            left: 25px;
+            width: 50px;
+            height: auto;
+            border: 2px solid #090808;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease; /* Add transition effect */
+        }
+
+        .backBtn:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+
+        .backBtn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .styled-select {
+            border-radius: 8px;
+            padding: 5px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        /* Optional: style the options within the select */
+        .styled-select option {
+            padding: 10px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="backBtn" onclick="goBack()">
+        <img src="../img/back.png" alt="Image">
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="login-container">
+                <h2 class="text-center mb-4 ">LOGIN</h2>
+                <!-- User Form -->
+                <form id="UserForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter Your Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter Your Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accessRoleSignIn">Access Role</label>
+                        <select id="accessRoleSignIn" name="accessRole" class="styled-select">
+                            <option value="SELECT">select</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="USER">User</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="login-btn " >LOGIN</button>
+                    <h6>or create a account &#8659;</h6>
+                    <button id="signup-btn" class="signUp-btn " data-toggle="modal" data-target="#signupModal">SIGN UP</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Signup Form -->
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="newUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accessRole">Access Role</label>
+                        <select id="accessRole" name="accessRole">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="USER">USER</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get form data
+        const formData = {
+            username: document.getElementById('newUsername').value,
+            password: document.getElementById('newPassword').value
+        };
+
+        // Send data to backend
+        fetch('/api/v1/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle response from backend
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+    });
+    function goBack() {
+        window.history.back();
+    }
+
+</script>
+</body>
+</html>
