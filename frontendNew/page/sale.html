@@ -141,18 +141,19 @@
             </a>
             <form class="d-none d-md-flex ms-4">
                 <input class="form-control border-0"  id="search" type="search"  style="margin-bottom: 0px " placeholder="Search">
+                <button type="button" class="btn btn-outline-primary saledataget" style="margin-left: 20px" >Search</button>
             </form>
             <div class="navbar-nav align-items-center ms-auto">
 
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                       <!-- <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
+                        <!-- <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
                         <span class="d-none d-lg-inline-flex">Manager</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <!--<a href="profile.html" class="dropdown-item">My Profile</a>-->
                         <!--<a href="#" class="dropdown-item">Settings</a>-->
-                        <a href="../index.html" class="dropdown-item">Log Out</a>
+                        <a href="login.html" class="dropdown-item">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -172,19 +173,12 @@
 
                         <form class="row g-3 p-3 ">
                             <div class="col-md-4">
-                                <label for="inputState" class="form-label">Item Code</label>
-                                <select  class="form-select">
-                                    <option selected>Select Code</option>
-                                    <option></option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="validationDefault01" class="form-label">Order No</label>
-                                <input type="text" class="form-control" id="validationDefault01" placeholder="Enter Order No" required>
+                                <label for="saleorderno" class="form-label">Order No</label>
+                                <input type="text" class="form-control saleorderno" id="saleorderno" placeholder="Enter Order No" required>
                             </div>
                             <div class="col-md-4">
                                 <label for="inputState" class="form-label">Customer Name</label>
-                                <select  class="form-select">
+                                <select  class="form-select salecustomername">
                                     <option selected>Select Customer</option>
                                     <option></option>
                                 </select>
@@ -211,35 +205,34 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputEmail4" class="form-label">Total Price</label>
-                                <input type="text" class="form-control" placeholder="Enter Total Price">
+                                <label for="saletotalprice" class="form-label">Total Price</label>
+                                <input type="text" class="form-control saletotalprice" id="saletotalprice" placeholder="Enter Total Price">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputEmail4" class="form-label">Purchase date</label>
-                                <input type="date" class="form-control" id="inputEmail4">
+                                <label for="salepurchasedate" class="form-label">Purchase date</label>
+                                <input type="date" class="form-control salepurchasedate" id="salepurchasedate">
                             </div>
                             <div class="col-md-4">
                                 <label for="inputState" class="form-label">Payment method</label>
-                                <select id="#" class="form-select">
+                                <select id="#" class="form-select salepayementmethod">
                                     <option disabled selected>Payment method</option>
                                     <option>Cash</option>
                                     <option>Credit Card</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword4" class="form-label">Add points</label>
-                                <input type="number" class="form-control" id="inputPassword4" placeholder="Enter Points">
+                                <label for="salepoints" class="form-label">Add points</label>
+                                <input type="number" class="form-control salepoints" id="salepoints" placeholder="Enter Points">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputCity" class="form-label">Cashier Name</label>
-                                <input type="text" class="form-control" id="inputCity" placeholder="Enter Cashier Name">
+                                <label for="salecashiername" class="form-label">Cashier Name</label>
+                                <input type="text" class="form-control salecashiername" id="salecashiername" placeholder="Enter Cashier Name">
                             </div>
-
                             <div class="d-grid gap-2 d-md-flex my-5">
-                                <button id="btnSave" class="btn btn-outline-primary me-md-2" type="submit">Save</button>
-                                <button id="btnUpdate" class="btn btn-outline-warning" type="button">Update</button>
-                                <button id="btnRemove" class="btn btn-outline-danger" type="button">Delete</button>
-                                <button id="btnGetAll" class="btn btn-outline-success" type="button">Get All</button>
+                                <button  class="btn btn-outline-primary me-md-2 saledatasave" type="button">Save</button>
+                                <button  class="btn btn-outline-warning saledataupdate" type="button">Update</button>
+                                <button  class="btn btn-outline-danger saledatadelete" type="button">Delete</button>
+                                <button  class="btn btn-outline-success salealldataget" type="button">Get All</button>
                             </div>
                         </form>
 
@@ -254,7 +247,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-bordered saleitemtable" id="saleitemtable">
                                     <thead>
                                     <tr>
                                         <th scope="col">Code</th>
@@ -279,6 +272,44 @@
                     </div>
                 </div>
             </main>
+            <div class="col-6 d-flex flex-wrap justify-content-center align-items-center inventoryaddpopupform" style="display: none !important;">
+                <div class="col-12 d-flex flex-wrap justify-content-end inventoryaddpopupformheader">
+                    <button class="inventoryaddpopupformclosebtn">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between inventoryaddpopupformbody">
+                    <div>
+                        <div class="mb-3">
+                            <label for="saleitemcode" class="form-label labelfont">Item Code</label>
+                            <input type="email" class="form-control inputfont saleitemcode" id="saleitemcode" placeholder="Enter Code">
+                        </div>
+                        <div class="mb-3">
+                            <label for="saleitemqty" class="form-label labelfont">Item QTY</label>
+                            <input type="text" class="form-control inputfont saleitemqty" id="saleitemqty" placeholder="Enter Item QTY">
+                        </div>
+                        <div class="mb-3">
+                            <label for="saleunitprice" class="form-label labelfont">Unit Price</label>
+                            <input type="email" class="form-control inputfont saleunitprice" id="saleunitprice" placeholder="Enter Unit Price">
+                        </div>
+                        <div class="d-flex inventoryaddpopupformbtncontainer">
+                            <button type="button" class="btn btn-outline-primary saleinventoryaddsave">Add Item</button>
+                            <button type="button" class="btn btn-outline-warning saleinventoryaddupdate" style="display: none;">Update Item</button>
+                            <button type="button" class="btn btn-outline-danger saleinventoryaddfieldclear">Clear</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-3">
+                            <label for="saleitemdescription" class="form-label labelfont">Item Description</label>
+                            <input type="text" class="form-control inputfont saleitemdescription" id="saleitemdescription" placeholder="Enter Item Desc">
+                        </div>
+                        <div class="mb-3">
+                            <label for="saleitemsize" class="form-label labelfont">Size</label>
+                            <input type="text" class="form-control inputfont saleitemsize" id="saleitemsize" placeholder="Enter Size">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
@@ -301,6 +332,15 @@
 <script src="../lib/tempusdominus/js/moment.min.js"></script>
 <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
 <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="../js/main.js"></script>
+<script src="../ajax/Sale.js"></script>
+<script src="../assets/script/SaleForm.js"></script>
+<script src="../assets/script/jquery-3.7.1.min.js"></script>
+<script src="../ajax/GlobalAttr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </body>
 </html>
