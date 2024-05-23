@@ -137,24 +137,25 @@
             </a>
             <form class="d-none d-md-flex ms-4">
                 <input class="form-control border-0" id="search" type="search" style="margin-bottom: 0px " placeholder="Search">
+                <button type="button" class="btn btn-outline-primary customerdataget" style="margin-left: 20px" >Search</button>
             </form>
             <div class="navbar-nav align-items-center ms-auto">
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                       <!-- <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
+                        <!-- <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
                         <span class="d-none d-lg-inline-flex">Manager</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <!--<a href="../pages/profile.html" class="dropdown-item">My Profile</a>-->
                         <!--<a href="#" class="dropdown-item">Settings</a>-->
-                        <a href="../index.html" class="dropdown-item">Log Out</a>
+                        <a href="login.html" class="dropdown-item">Log Out</a>
                     </div>
                 </div>
             </div>
         </nav>
 
         <!-- Form Page Start -->
-        <div id="layoutSidenav_content">
+        <div id="customer" class="container py-5 p-lg-5">
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Customer Registration</h1>
@@ -165,77 +166,85 @@
                         </div>
                         <form class="row g-3 p-3">
                             <div class="col-md-4">
-                                <label for="validationDefault01" class="form-label">Customer Code</label>
-                                <input type="text" class="form-control" id="validationDefault01" placeholder="Enter Your Code" required>
+                                <h6 class="mb-3">Customer Code:</h6>
+                                <input type="text"  class="form-control mb-4 w-75 customercode">
                             </div>
                             <div class="col-md-4">
-                                <label for="validationDefault02" class="form-label">Customer name</label>
-                                <input type="text" class="form-control" id="validationDefault02" placeholder="Enter Your Name" required>
+                                <h6 class="mb-3">Customer Name:</h6>
+                                <input type="text"  class="form-control mb-4 w-75 customername">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputState" class="form-label">Gender</label>
-                                <select id="inputState" class="form-select">
-                                    <option selected>Select gender</option>
-                                    <option value="MALE">Male</option>
-                                    <option value="FEMALE">Female</option>
-                                    <option value="OTHER">Other</option>
+                                <label for="inputGender" class="form-label"><b>Gender</b></label>
+                                <select id="inputGender" class="form-select mb-4 w-75 customergender">
+                                    <option disabled selected>Gender</option>
+                                    <option value="1">MALE</option>
+                                    <option value="2">FEMALE</option>
+                                    <option value="3">OTHER</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputEmail4" class="form-label">Join date</label>
-                                <input type="date" class="form-control" id="inputEmail4">
+                                <label for="joindate" class="form-label">Join date</label>
+                                <input type="date" class="form-control mb-4 w-75 joindate" id="joindate">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputState" class="form-label">Level</label>
-                                <select id="#" class="form-select">
-                                    <option disabled selected>Select Level</option>
-                                    <option value="GOLD">Gold</option>
-                                    <option value="SILVER">Silver</option>
-                                    <option value="BRONZE">Bronze</option>
-                                    <option value="NEW">New</option>
+                                <label for="customerlevel" class="form-label">Level</label>
+                                <select id="customerlevel" class="form-select mb-4 w-75 customerlevel">
+                                    <option disabled selected>Level</option>
+                                    <option value="1"> GOLD</option>
+                                    <option value="2">SILVER</option>
+                                    <option value="3">BRONZE</option>
+                                    <option value="4">NEW</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword4" class="form-label">Total points</label>
-                                <input type="number" class="form-control" id="inputPassword4">
+                                <label for="customertotalpoints" class="form-label">Total points</label>
+                                <input type="text" id="customertotalpoints" class="form-control mb-4 w-75 customertotalpoints">
                             </div>
                             <div class="col-4">
-                                <label for="inputAddress" class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                                <label for="customerdob" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control mb-4 w-75 customerdob" id="customerdob" placeholder="1234 Main St">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputCity" class="form-label">Mobile Number</label>
-                                <input type="text" class="form-control" id="inputCity" placeholder="Enter Your Number">
+                                <label for="customerrecentpurchasedatetime" class="form-label">Recent purchase date and time:</label>
+                                <input type="datetime-local" id="customerrecentpurchasedatetime" class="form-control mb-4 w-75 customerrecentpurchasedatetime" placeholder="Enter Your Number">
                             </div>
-                            <div class="col-md-4">
-                                <label for="validationDefaultUsername" class="form-label">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text" id="inputGroupPrepend2">@</span>
-                                    <input type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" placeholder="Enter Your Email" required>
-                                </div>
-                            </div>
-
                             <div class="details personal">
                                 <span class="title">Address Details</span>
                             </div>
                             <div class="col-md-4">
-                                <label for="validationDefault01" class="form-label">Building NO</label>
-                                <input type="text" class="form-control"  placeholder="Enter Building NO" required>
+                                <label for="customeraddressline01" class="form-label">Building NO</label>
+                                <input type="text" class="form-control mb-4 w-75 customeraddressline01"  placeholder="Enter Building NO" id="customeraddressline01" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="validationDefault02" class="form-label">Lane</label>
-                                <input type="text" class="form-control"  placeholder="Enter Lane" required>
+                                <label for="customeraddressline02" class="form-label">Lane</label>
+                                <input type="text" class="form-control mb-4 w-75 customeraddressline02"  placeholder="Enter Lane" id="customeraddressline02" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="validationDefault01" class="form-label">Main City</label>
-                                <input type="text" class="form-control"  placeholder="Enter Main City" required>
+                                <label for="customeraddressline03" class="form-label">Main City</label>
+                                <input type="text" class="form-control mb-4 w-75 customeraddressline03"  placeholder="Enter Main City" id="customeraddressline03" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="customeraddressline04" class="form-label">State</label>
+                                <input type="text" class="form-control mb-4 w-75 customeraddressline04"  placeholder="Enter State" id="customeraddressline04" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="customeraddressline05" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control mb-4 w-75 customeraddressline05"  placeholder="Enter Postal Code" id="customeraddressline05" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="customercontactno" class="form-label">Mobile Number</label>
+                                <input type="text" class="form-control mb-4 w-75 customercontactno" id="customercontactno" placeholder="Enter Your Number">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="customeremail" class="form-label">Email:</label>
+                                <input type="text" class="form-control mb-4 w-75 customeremail" id="customeremail" placeholder="Enter Your Number">
                             </div>
 
-                            <div class=" gap-2 d-md-flex my-5">
-                                <button id="btnSave" class="btn btn-outline-primary me-md-2" type="submit">Save</button>
-                                <button id="btnUpdate" class="btn btn-outline-warning" type="button">Update</button>
-                                <button id="btnRemove" class="btn btn-outline-danger" type="button">Delete</button>
-                                <button id="btnGetAll" class="btn btn-outline-success" type="button">Get All</button>
+                            <div class="d-grid gap-2 d-md-flex my-5">
+                                <button  class="btn btn-outline-primary me-md-2 customerdatasave" type="submit">Save</button>
+                                <button  class="btn btn-outline-warning customerdataupdate" type="button">Update</button>
+                                <button  class="btn btn-outline-danger customerdatadelete" type="button">Delete</button>
+                                <button  class="btn btn-outline-success customeralldataget" type="button">Get All</button>
                             </div>
                         </form>
                     </div>
@@ -248,23 +257,20 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                                <table class="table customertable" id="customertable">
                                     <thead>
                                     <tr>
-                                        <th scope="col">Code</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Gender</th>
-                                        <th scope="col">Join Date</th>
-                                        <th scope="col">Level</th>
-                                        <th scope="col">Points</th>
-                                        <th scope="col">DOB</th>
-                                        <th scope="col">Contact No</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Building NO</th>
-                                        <th scope="col">Lane</th>
-                                        <th scope="col">City</th>
-                                        <th scope="col">State</th>
-                                        <th scope="col">Postal Code</th>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Join date</th>
+                                        <th>Level</th>
+                                        <th>Total points</th>
+                                        <th>DOB</th>
+                                        <th>Address</th>
+                                        <th>Contact No</th>
+                                        <th>Email</th>
+                                        <th>Purchase date & time</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -289,6 +295,20 @@
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../lib/chart/chart.min.js"></script>
+<script src="../lib/easing/easing.min.js"></script>
+<script src="../lib/waypoints/waypoints.min.js"></script>
+<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="../lib/tempusdominus/js/moment.min.js"></script>
+<script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
+<!-- Template Javascript -->
+<script src="../js/main.js"></script>
+<script src="../ajax/Customer.js"></script>
+<script src="../assets/script/CustomerForm.js"></script>
+<script src="../assets/script/jquery-3.7.1.min.js"></script>
+<script src="../ajax/GlobalAttr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

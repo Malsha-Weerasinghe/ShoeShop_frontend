@@ -6,7 +6,7 @@ html, body {
 
 body {
     font-family: Arial, sans-serif;
-    background-image: url("../assets/images/interior-design-for-shoe-shop.jpg");
+    background-image: url("../images/interior-design-for-shoe-shop.jpg");
     background-size: cover;
     /*overflow: hidden;*/
     background-attachment: fixed;

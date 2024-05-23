@@ -5,7 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../assets/images/shoeShop.jpg");
+    background-image: url("../images/shoeShop.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
