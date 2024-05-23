@@ -168,7 +168,6 @@
     </style>
 
 </head>
-<body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
 
     <!-- Sidebar Start -->
@@ -213,18 +212,19 @@
             </a>
             <form class="d-none d-md-flex ms-4">
                 <input class="form-control border-0" id="search" type="search" style="margin-bottom: 0px " placeholder="Search">
+                <button type="button" class="btn btn-outline-primary employeedataget " style="margin-left: 20px" >Search</button>
             </form>
             <div class="navbar-nav align-items-center ms-auto">
 
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                       <!-- <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
+                        <!-- <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
                         <span class="d-none d-lg-inline-flex">Manager</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <!--<a href="profile.html" class="dropdown-item">My Profile</a>-->
                         <!--<a href="#" class="dropdown-item">Settings</a>-->
-                        <a href="../index.html" class="dropdown-item">Log Out</a>
+                        <a href="../login.html" class="dropdown-item">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -248,9 +248,12 @@
                                 <div class="form col-md-4">
                                     <div class="grid">
                                         <div class="form-element">
-                                            <input type="file" id="file-1" accept="image/*" required>
-                                            <label for="file-1" id="file-1-preview">
-                                                <img src="https://bit.ly/3ubuq5o" alt="" >
+                                            <input type="file" id="file-input" class="employeeimage" accept="image/*" required>
+                                            <label for="file-input" id="file-1-preview">
+                                                <div id="image-preview">
+                                                    <img class="employeeimgpreview" src="" alt="">
+                                                    <img class="employeedefaultimg" src="" alt="">
+                                                </div>
                                                 <div>
                                                     <span>+</span>
                                                 </div>
@@ -262,96 +265,107 @@
                                 <div class="row col-md-8 mt-3">
                                     <div class="col-md-6">
                                         <label  class="form-label">Employee Code</label>
-                                        <input type="text" class="form-control" placeholder="Enter Your Code" required>
+                                        <input type="text" class="form-control employeecode"   placeholder="Enter Your Code" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label  class="form-label">Employee name</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Your Name" required>
+                                        <input type="text" class="form-control employeename" id="employeename"  placeholder="Enter Your Name" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="inputState" class="form-label">Gender</label>
-                                        <select id="inputState" class="form-select">
+                                        <label for="employeegender" class="form-label">Gender</label>
+                                        <select id="employeegender" class="form-select employeegender">
                                             <option selected>Select gender</option>
-                                            <option>MALE</option>
-                                            <option>FEMALE</option>
-                                            <option>OTHERS</option>
+                                            <option value="1">MALE</option>
+                                            <option value="2">FEMALE</option>
+                                            <option value="3">ORHERS</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="inputState" class="form-label">Status</label>
-                                        <select  class="form-select">
+                                        <label for="employeestatus" class="form-label">Status</label>
+                                        <select  id="employeestatus" class="form-select employeestatus">
                                             <option selected>Select Status</option>
-                                            <option>Active</option>
-                                            <option>Inactive</option>
+                                            <option value="1">Married</option>
+                                            <option value="2">Unmarried</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label  class="form-label">Designation</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Designation" required>
+                                        <input type="text" class="form-control employeedesignation"  id="employeedesignation" placeholder="Enter Designation" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label  class="form-label">Access Role</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Access Role" required>
+                                        <input type="text" class="form-control employeerole" id="employeerole" placeholder="Enter Access Role" required>
+                                        <!--<select  id="employeerole" class="form-select employeerole">
+                                            <option selected>Select Role</option>
+                                            <option value="1">ADMIN</option>
+                                            <option value="2">USER</option>
+                                        </select>-->
                                     </div>
                                 </div>
 
                                 <div class="row g-md-3">
                                     <div class="col-4">
-                                        <label for="inputAddress" class="form-label">Date of Birth</label>
-                                        <input type="date" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                                        <label for="employeedob" class="form-label">Date of Birth</label>
+                                        <input type="date" class="form-control employeedob" id="employeedob" placeholder="1234 Main St">
                                     </div>
                                     <div class="col-4">
-                                        <label for="inputAddress" class="form-label">Date of Join</label>
-                                        <input type="date" class="form-control"  placeholder="1234 Main St">
+                                        <label for="employeejoindate" class="form-label">Date of Join</label>
+                                        <input type="date" class="form-control employeejoindate" id="employeejoindate"  placeholder="1234 Main St">
                                     </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">Attached Branch</label>
-                                        <input type="text" class="form-control" placeholder="Enter Attached Branch" required>
+                                        <input type="text" class="form-control employeebranch" id="employeebranch" placeholder="Enter Attached Branch" required>
                                     </div>
 
+                                    <div class="details personal">
+                                        <span class="title">Address Details</span>
+                                    </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">Building NO</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Building NO" required>
+                                        <input type="text" class="form-control employeeaddressLine01" id="employeeaddressLine01"  placeholder="Enter Building NO" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Lane</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Lane" required>
+                                        <input type="text" class="form-control employeeaddressLine02"  id="employeeaddressLine02" placeholder="Enter Lane" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">Main City</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Main City" required>
+                                        <input type="text" class="form-control employeeaddressLine03" id="employeeaddressLine03"  placeholder="Enter Main City" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">Main State</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Main State" required>
+                                        <input type="text" class="form-control employeeaddressLine04" id="employeeaddressLine04"  placeholder="Enter Main State" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Postal Code</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Postal Code" required>
+                                        <input type="text" class="form-control employeeaddressLine05" id="employeeaddressLine05"  placeholder="Enter Postal Code" required>
                                     </div>
 
+                                    <div class="details personal">
+                                        <span class="title">Contact Details</span>
+                                    </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">Contact Number</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Contact Number" required>
+                                        <input type="text" class="form-control employeecontactno"  id="employeecontactno" placeholder="Enter Contact Number" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Email</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Email" required>
+                                        <input type="text" class="form-control employeeemail" id="employeeemail" placeholder="Enter Email" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">MInform in Case of Emergency</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Emergency" required>
+                                        <input type="text" class="form-control employeeinformincaseofEmergency"  id="employeeinformincaseofEmergency" placeholder="Enter Emergency" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label  class="form-label">Emergency Contact</label>
-                                        <input type="text" class="form-control"  placeholder="Enter Emergency Contact" required>
+                                        <input type="text" class="form-control emergencycontact"  id="emergencycontact" placeholder="Enter Emergency Contact" required>
                                     </div>
 
                                     <div class="d-grid gap-2 d-md-flex my-5">
-                                        <button id="btnSave" class="btn btn-outline-primary me-md-2" type="submit">Save</button>
-                                        <button id="btnUpdate" class="btn btn-outline-warning" type="button">Update</button>
-                                        <button id="btnRemove" class="btn btn-outline-danger" type="button">Delete</button>
-                                        <button id="btnGetAll" class="btn btn-outline-success" type="button">Get All</button>
+                                        <button  class="btn btn-outline-primary me-md-2 employeedatasave" type="submit">Save</button>
+                                        <button  class="btn btn-outline-warning employeedataupdate" type="button">Update</button>
+                                        <button  class="btn btn-outline-danger employeedatadelete" type="button">Delete</button>
+                                        <button  class="btn btn-outline-success employeealldataget" type="button">Get All</button>
                                     </div>
                                 </div>
 
@@ -371,23 +385,27 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-bordered employeetable" id="employeetable">
                                     <thead>
                                     <tr>
                                         <th scope="col">Code</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Gender</th>
-                                        <th scope="col">Join Date</th>
-                                        <th scope="col">Level</th>
-                                        <th scope="col">Points</th>
-                                        <th scope="col">DOB</th>
-                                        <th scope="col">Contact No</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Building NO</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Designation</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Date_Of_Birth</th>
+                                        <th scope="col">Joined_Date</th>
+                                        <th scope="col">Branch</th>
+                                        <th scope="col">Building</th>
                                         <th scope="col">Lane</th>
                                         <th scope="col">City</th>
                                         <th scope="col">State</th>
-                                        <th scope="col">Postal Code</th>
+                                        <th scope="col">Postal_Code</th>
+                                        <th scope="col">Number</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Case_of_Emer.</th>
+                                        <th scope="col">Emergency</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -406,15 +424,30 @@
             </footer>
         </div>
 
-    <a href="#" class="btn btn-lg btn-warning btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-</div>
+        <a href="#" class="btn btn-lg btn-warning btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
 </div>
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../lib/chart/chart.min.js"></script>
+<script src="../lib/easing/easing.min.js"></script>
+<script src="../lib/waypoints/waypoints.min.js"></script>
+<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="../lib/tempusdominus/js/moment.min.js"></script>
+<script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-<script>
+<!-- Template Javascript -->
+<script src="../js/main.js"></script>
+<script src="../assets/script/EmployeeForm.js"></script>
+<script src="../assets/script/jquery-3.7.1.min.js"></script>
+<script src="../ajax/Employee.js"></script>
+<script src="../ajax/GlobalAttr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!--<script>
     function previewBeforeUpload(id){
         document.querySelector("#"+id).addEventListener("change",function(e){
             if(e.target.files.length == 0){
@@ -428,6 +461,6 @@
     }
 
     previewBeforeUpload("file-1");
-</script>
+</script>-->
 </body>
 </html>
