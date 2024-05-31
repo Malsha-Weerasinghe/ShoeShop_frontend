@@ -5,7 +5,6 @@ let jwtToken = localStorage.getItem("jwtToken")
 
 
 // Save Customer
-/*
 $('#customerSaveBtn').on('click', ()=>{
     var customerId = $('#customerIdTxt').val();
     var customerName = $('#customerNameTxt').val();
@@ -78,8 +77,8 @@ $('#customerSaveBtn').on('click', ()=>{
 
 
 })
-*/
 
+/*
 $('#customerSaveBtn').on('click', () => {
     // Auto-generate customerId
     var customerId = generateNextCustomerId();
@@ -159,6 +158,7 @@ function getLastCustomerId() {
     // For now, I'll just return a placeholder value
     return 'CUS00_000'; // Placeholder value, replace this with actual implementation
 }
+*/
 
 
 // Update Customer

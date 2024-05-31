@@ -2,6 +2,56 @@ import {SupplierModel} from "../Model/SupplierModel.js";
 
 
 // Save Suppliers
+
+$('#supplierSaveBtn').on('click', ()=>{
+
+    var supplierCode = $('#supplierCodeTxt').val();
+    var supplierName = $('#supplierNameTxt').val();
+    var category = $('#supCategoryOption').val();
+    var address1 = $('#address1Txt').val();
+    var address2 = $('#address2Txt').val();
+    var address3 = $('#address3Txt').val();
+    var contact1 = $('#contact1Txt').val();
+    var contact2 = $('#contact2Txt').val();
+    var mail = $('#mailTxt').val();
+
+
+    if (validate(supplierCode,"Supplier Code") && validate(supplierName,"Supplier Name") && validate(category,"Category") && validate(address1,"Address 1") && validate(address2,"Address 2") && validate(address3,"Address 3") && validate(contact1,"Contact 1") && validate(contact2,"Contact 2") && validate(mail,"Mail")){
+
+
+        var  supplierDetails = new SupplierModel(supplierCode,supplierName,category,address1,address2,address3,contact1,contact2,mail);
+        var supplierDetailsJson = JSON.stringify(supplierDetails);
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/shoes/supplier/save",
+            contentType: "application/json",
+            data: supplierDetailsJson,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
+            },
+            success: function(data) {
+                $('#supplier_Table').empty();
+                getAllSupplier();
+                Swal.fire({
+                    title: "Supplier Save Success",
+                    icon: "success"
+                });
+            },
+            error: function(xhr, status, error) {
+                alert("Failed");
+            }
+        });
+
+
+
+    }
+
+})
+
+
+
+/*
 $('#supplierSaveBtn').on('click', ()=>{
 
     var supplierCode = generateNextSupplierId();
@@ -9,7 +59,7 @@ $('#supplierSaveBtn').on('click', ()=>{
     // Set generated customerId to the customerIdTxt field
     $('#supplierCodeTxt').val(supplierCode);
 
-   /* var supplierCode = $('#supplierCodeTxt').val();*/
+   /!* var supplierCode = $('#supplierCodeTxt').val();*!/
     var supplierName = $('#supplierNameTxt').val();
     var category = $('#supCategoryOption').val();
     var address1 = $('#address1Txt').val();
@@ -79,6 +129,7 @@ function getLastSupplierId() {
     return 'SUP00_000'; // Placeholder value, replace this with actual implementation
 }
 
+*/
 
 
 // Search Supplier
