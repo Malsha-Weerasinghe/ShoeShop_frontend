@@ -34,7 +34,7 @@ $('#customerCodeOption').change(function() {
             xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
         },
         success: function(data) {
-           $('#customerNameTxt').val(data.customerName)
+            $('#customerNameTxt').val(data.customerName)
         },
         error: function(xhr, status, error) {
             alert("Failed");
@@ -112,12 +112,12 @@ $('#itemCodeOption').change(function (){
 
 // Purchase Date Set
 function purchaseDateSet(){
-var currentDate = new Date();
-var year = currentDate.getFullYear();
-var month = (currentDate.getMonth() + 1 < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
-var day = (currentDate.getDate() < 10) ? '0' + currentDate.getDate() : currentDate.getDate();
-var formattedDate = year + '-' + month + '-' + day;
-$('#purchaseDateTxt').val(formattedDate);
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = (currentDate.getMonth() + 1 < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
+    var day = (currentDate.getDate() < 10) ? '0' + currentDate.getDate() : currentDate.getDate();
+    var formattedDate = year + '-' + month + '-' + day;
+    $('#purchaseDateTxt').val(formattedDate);
 }
 
 
@@ -216,8 +216,33 @@ $('#orderBuyBtn').on('click', ()=>{
                 xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
             },
             success: function(data) {
+                console.log(data)
                 generateNewOrderId()
-                alert("Success");
+                if (data === 'Sorry This Not Available This Quantity in stock'){
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: data
+                    });
+
+                }else if ( data === 'This Item Quantity Unavailable Stock'){
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: data
+                    });
+
+                }else if (data === 'Order Placed'){
+
+                    alert("Success");
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: data
+                    });
+
+                }
+
             },
             error: function(xhr, status, error) {
                 alert("Failed");
@@ -277,10 +302,10 @@ $('#paymentMethod').change(function (){
     var selectPayMethod = $('#paymentMethod').val();
 
     if(selectPayMethod === "CREDITCARD"){
-           $('#cashTxt').css('display','none')
-           $('#cashLbl').css('display','none')
-           $('#creditCardTxt').css('display','block')
-           $('#cardLbl').css('display','block')
+        $('#cashTxt').css('display','none')
+        $('#cashLbl').css('display','none')
+        $('#creditCardTxt').css('display','block')
+        $('#cardLbl').css('display','block')
     }else{
         $('#cashTxt').css('display','block')
         $('#cashLbl').css('display','block')

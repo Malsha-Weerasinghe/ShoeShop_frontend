@@ -22,10 +22,10 @@ const getSuppliersIds = (jwtToken) => {
             xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
         },
         success: function(data) {
-                var selectElement = $('#supplierCodeOption');
-                data.forEach(supplier => {
-                    selectElement.append(`<option value="${supplier.supplierCode}">${supplier.supplierCode}</option>`);
-                });
+            var selectElement = $('#supplierCodeOption');
+            data.forEach(supplier => {
+                selectElement.append(`<option value="${supplier.supplierCode}">${supplier.supplierCode}</option>`);
+            });
 
 
 
@@ -291,10 +291,10 @@ $('#itemDeleteBtn').on('click', ()=>{
 $('#itemSearchBtn').on('click', ()=>{
     var  itemId = $('#itemSearchTxt').val();
 
-    $('#itemTypeOpation').prop('disabled', true);
-    $('#occasionOpation').prop('disabled', true);
-    $('#veritiesOpation').prop('disabled', true);
-    $('#quantityTxt').prop('disabled', true);
+    // $('#itemTypeOpation').prop('disabled', true);
+    // $('#occasionOpation').prop('disabled', true);
+    // $('#veritiesOpation').prop('disabled', true);
+    // $('#quantityTxt').prop('disabled', true);
 
 
     if (validate(itemId,"Search Item Id")){
@@ -414,11 +414,11 @@ function handleChange() {
             xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("jwtToken"));
         },
         success: function (data) {
-       
-                let incrementedId = parseInt(data, 10) + 1;
-                var id = incrementedId.toString().padStart(data.length, '0');
-                var createItemId = idFirstLetters+id
-                $('#itemIdTxt').val(createItemId);
+
+            let incrementedId = parseInt(data, 10) + 1;
+            var id = incrementedId.toString().padStart(data.length, '0');
+            var createItemId = idFirstLetters+id
+            $('#itemIdTxt').val(createItemId);
 
 
         },
@@ -454,9 +454,7 @@ function validate(value, field_name){
 document.addEventListener('DOMContentLoaded', function() {
     const jwtToken = localStorage.getItem("jwtToken");
     getAllItemSetTabelSendAJAX(jwtToken)
-    $('#itemUpdateBtn').css('display','none')
-    $('#itemDeleteBtn').css('display','none')
+    // $('#itemUpdateBtn').css('display','none')
+    // $('#itemDeleteBtn').css('display','none')
     checkHaveItemQtyAndSetNotify()
 });
-
-
